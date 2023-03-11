@@ -1,0 +1,28 @@
+name: "Check Version"
+description: "Check whether your project version was updated in pull-request or a single commit"
+author: "Pavlo Sivkovych (https://github.com/Iseedead)"
+branding:
+  icon: hash
+  color: white
+inputs:
+  log-level:
+    description: "Logging level that will be used by the script"
+    required: false
+    default: "INFO"
+  check-only-for:
+    description: "A single configuration file to check for"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - id: check-version
+      name: Check Version
+      run: |
+        action_sh="${{ github.action_path }}/src/action.sh"
+        chmod +x "${action_sh}"
+        ./"${action_sh}" \
+          ${{ github.event.pull_request.base.ref || "__NULL__" }} \
+          ${{ github.event.before || "__NULL__" }} \
+          ${{ inputs.log-level }} \
+          ${{ inputs.check-only-for }}
+      shell: bash

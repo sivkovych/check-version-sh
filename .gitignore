@@ -1,0 +1,14 @@
+### IntelliJ IDEA ###
+.idea/*
+!.idea/runConfigurations
+!.idea/codeStyles
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/

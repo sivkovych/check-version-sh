@@ -19,7 +19,10 @@ runs:
     - id: check-version
       name: Check Version
       run: |
-        echo "GITHUB_ENV: $GITHUB_ENV"
+        echo "GITHUB_EVENT: $GITHUB_EVENT"
+        echo "GITHUB_HEAD_REF: $GITHUB_HEAD_REF"
+        echo "GITHUB_REF: $GITHUB_REF"
+        echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
         chmod +x src/action.sh
         ./src/action.sh \
           --branch-ref ${{ github.event.pull_request.base.ref }} \

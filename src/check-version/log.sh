@@ -28,7 +28,11 @@ log::error() {
     return 1
 }
 log::fail() {
-    log::error "${1}, re-run with [--log-level debug] to get more information"
+    local message="${1}"
+    if log::_is_not_level "debug"; then
+        message="${message}, re-run with [--log-level debug] to get more information"
+    fi
+    log::error "${message}"
     log::debug "Exit code [1]"
     exit 1
 }
@@ -38,6 +42,12 @@ log::_log() {
     if [[ ${_log_level} -le ${1} ]] && [ -n "${2}" ]; then
         echo -e "$(date +%F_%H-%M-%S) [$(log::_to_string "${1}")] -- ${2}"
     fi
+}
+log::_is_not_level() {
+    if [[ ${_log_level} -gt "$(log::_to_number "${1}")" ]]; then
+        return 0
+    fi
+    return 1
 }
 log::_to_number() {
     case "$(echo "${1}" | tr "[:lower:]" "[:upper:]")" in

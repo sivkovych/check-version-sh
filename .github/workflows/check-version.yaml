@@ -1,9 +1,12 @@
 name: Check Version Increment
 on:
-  pull_request:
+  push:
     branches:
-      - main
-      - feature/*
+      - feature/readme-n-flow-n-all-specified-mandatory-check
+#  pull_request:
+#    branches:
+#      - main
+#      - feature/*
 jobs:
   check-version-increment:
     runs-on: ${{ matrix.os }}

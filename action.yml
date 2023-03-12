@@ -10,10 +10,8 @@ inputs:
     required: false
     default: "INFO"
   check-only-for:
-    description: """
-      A list of coma separated files to check for (since GitHub Actions does not support array inputs yet).
-      Do not insert space after coma, or the list will be parsed as a separate arguments.
-      """
+    description: "A list of coma separated files to check for (since GitHub Actions does not support array inputs yet).
+      Do not insert space after coma, or the list will be parsed as a separate arguments."
     required: false
 runs:
   using: "composite"

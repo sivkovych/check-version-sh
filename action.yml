@@ -16,18 +16,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJSON(github) }}
-      run: echo "$GITHUB_CONTEXT"
-      shell: bash
     - id: check-version
       name: Check Version
       run: |
-        echo "GITHUB_CONTEXT: $GITHUB_CONTEXT"
-        echo "GITHUB_HEAD_REF: $GITHUB_HEAD_REF"
-        echo "GITHUB_REF: $GITHUB_REF"
-        echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
         chmod +x src/action.sh
         ./src/action.sh \
           --branch-ref ${{ github.event.pull_request.base.ref }} \

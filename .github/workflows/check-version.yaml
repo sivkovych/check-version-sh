@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Check Version
-        uses: ./
+        uses: ${{ github.workspace }}
         with:
           log-level: "TRACE"
           check-only-for: "README.md"

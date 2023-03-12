@@ -19,10 +19,7 @@ runs:
     - id: check-version
       name: Check Version
       run: |
-        echo "workspace: ${{ github.workspace }}"
-        ls -la
-        action_sh="${{ github.action_path }}src/action.sh"
-        chmod +x "${action_sh}"
+        chmod +x src/action.sh
         ./"${action_sh}" \
           --branch-ref ${{ github.event.pull_request.base.ref }} \
           --commit-ref ${{ github.event.before }} \

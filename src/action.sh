@@ -1,9 +1,8 @@
 #!/bin/bash
-set -e
 #section Aliases
 shopt -s expand_aliases
 if [[ "${OSTYPE}" =~ ^darwin ]]; then
-    if ! command -v ggrep; then
+    if ! command -v ggrep >/dev/null; then
         brew install --quiet grep >/dev/null
     fi
     alias local::grep='ggrep'
@@ -30,6 +29,11 @@ while [ ${#} -gt 0 ]; do
         check_only_for=(${2/,/ })
         shift
     elif [[ "${1}" == "--"* ]]; then
+        variable="${1/--/}"
+        if [[ "${2}" == "--"* ]]; then
+            declare "${variable//-/_}"=
+            shift
+        fi
         variable="${1/--/}"
         declare "${variable//-/_}"="${2}"
         shift

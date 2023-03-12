@@ -3,9 +3,10 @@ on:
   pull_request:
     branches:
       - main
+      - feature/*
 jobs:
   check-version-increment:
-    runs-on: {{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:

@@ -48,6 +48,9 @@ log::debug "Received parameters: [${parameters}]"
 #endsection
 #section Execution
 if [ -n "${branch_ref}" ]; then
+    log::debug "BRANCHES BEFORE ORIGIN FETCH: $(git branch --list)"
+    git fetch -f -q origin
+    log::debug "BRANCHES AFTER ORIGIN FETCH: $(git branch --list)"
     branch="$(git branch --list | local::grep "${branch_ref}")"
     if [ -n "${branch}" ]; then
         log::debug "Fetching from [origin ${branch_ref}]"

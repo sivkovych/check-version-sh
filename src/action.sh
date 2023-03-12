@@ -60,8 +60,10 @@ if [ -n "${branch_ref}" ]; then
     git fetch -q -f origin "${branch_ref}"
 else
     if [ -n "${commit_ref}" ]; then
-        log::debug "REV-LIST"
-        git rev-list feature/readme-n-flow-n-all-specified-mandatory-check
+        log::debug "REV-LIST (git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check)"
+        git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check
+        log::debug "REV-LIST (git rev-list origin HEAD)"
+        git rev-list origin HEAD
         commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
         if [ -z "${commit}" ]; then
             log::fail "Commit [${commit_ref}] does not exist"

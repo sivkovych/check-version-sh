@@ -67,10 +67,7 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
     log::debug "Checking changes for [${version_file}]"
     # shellcheck source=./version-in/*.sh
     source "${version_file}"
-    #    if [ -n "${check_only_for}" ] && [[ "${version_file}" != *"${check_only_for/\./-}.sh" ]]; then
-    #    log::debug "CHECK ONLY FOR: ${check_only_for/,/ }"
-    #    check_on_for_formatted="${check_only_for/,/ }"
-    if util::not_contains "$(version::file_name)" "${check_only_for[@]}"; then
+    if util::not_contains "$(version::file_name)" "${check_only_for[@]}" && [ -n "${check_only_for}" ]; then
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
         continue
     fi
@@ -82,6 +79,9 @@ done
 log::debug "Version Checks exit codes: [${check_results[*]}]"
 if util::contains 1 "${check_results[@]}"; then
     log::fail "Version Check failed"
+fi
+if ! util::every 0 "${check_results[@]}" && [ -n "${check_only_for}" ]; then
+    log::fail "Not all specified file checks were successful"
 fi
 if util::every 66 "${check_results[@]}"; then
     log::fail "No changed/supported version files found"

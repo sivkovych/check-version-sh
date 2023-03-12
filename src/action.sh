@@ -48,18 +48,8 @@ log::debug "Received parameters: [${parameters}]"
 #endsection
 #section Execution
 if [ -n "${branch_ref}" ]; then
-    log::debug "BRANCHES BEFORE ORIGIN FETCH: $(git branch --list)"
-    git fetch -f -q origin
-    log::debug "BRANCHES AFTER ORIGIN FETCH: $(git branch --list)"
-    git fetch -q
-    log::debug "BRANCHES AFTER FETCH: $(git branch --list)"
-    branch="$(git branch --list | local::grep "${branch_ref}")"
-    if [ -n "${branch}" ]; then
-        log::debug "Fetching from [origin ${branch_ref}]"
-        git fetch -q -f origin "${branch_ref}"
-    else
-        log::fail "Branch [${branch_ref}] does not exist"
-    fi
+    log::debug "Fetching from [origin ${branch_ref}]"
+    git fetch -q -f origin "${branch_ref}"
 else
     if [ -n "${commit_ref}" ]; then
         commit="$(git rev-list --all | local::grep "${commit_ref}")"

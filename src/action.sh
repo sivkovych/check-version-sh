@@ -62,10 +62,16 @@ else
     if [ -n "${commit_ref}" ]; then
         log::debug "REV-LIST (git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check)"
         git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check
+        log::debug "REV-LIST (git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check)"
+        git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check
         log::debug "REV-LIST (git rev-list origin HEAD)"
         git rev-list origin HEAD
+        log::debug "REV-LIST (git rev-list origin:HEAD)"
+        git rev-list origin:HEAD
         log::debug "REV-LIST (git rev-list refs/remotes/origin/HEAD)"
         git rev-list refs/remotes/origin/HEAD
+        log::debug "GIT LOG "
+        git log
         commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
         if [ -z "${commit}" ]; then
             log::fail "Commit [${commit_ref}] does not exist"

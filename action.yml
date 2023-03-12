@@ -21,7 +21,7 @@ runs:
       run: |
         echo "PATH: ${{ github.action_path }}"
         ls -la
-        action_sh="${{ github.action_path }}/src/action.sh"
+        action_sh="${{ github.action_path }}src/action.sh"
         chmod +x "${action_sh}"
         ./"${action_sh}" \
           --branch-ref ${{ github.event.pull_request.base.ref }} \

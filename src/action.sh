@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 #section Aliases
 shopt -s expand_aliases
 if [[ "${OSTYPE}" =~ ^darwin ]]; then

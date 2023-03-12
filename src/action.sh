@@ -1,21 +1,90 @@
 #!/bin/bash
+#section Aliases
+shopt -s expand_aliases
+if [[ "${OSTYPE}" =~ ^darwin ]]; then
+    alias local::grep='ggrep'
+elif [[ "${OSTYPE}" =~ ^linux ]]; then
+    alias local::grep='grep'
+fi
+#endsection
+#section Imports
+readonly PROJECT_DIR="$(dirname "${0}")/check-version"
+source "${PROJECT_DIR}"/util.sh
+source "${PROJECT_DIR}"/log.sh
+source "${PROJECT_DIR}"/info.sh
+source "${PROJECT_DIR}"/check-version.sh
+#endsection
 #section Parameter Parsing
-if [[ ${#} == 0 ]]; then
-    echo "Action failed: No commit/branch references passed"
+readonly parameters="${*}"
+while [ ${#} -gt 0 ]; do
+    if [[ "${1}" == "--help" ]]; then
+        info::get_description
+        info::get_usage
+        exit 0
+    elif [[ "${1}" == "--check-only-for" ]]; then
+        # shellcheck disable=SC2206
+        check_only_for=(${2/,/ })
+        shift
+    elif [[ "${1}" == "--"* ]]; then
+        variable="${1/--/}"
+        declare "${variable//-/_}"="${2}"
+        shift
+    fi
+    shift
+done
+if [ -z "${branch_ref}" ] && [ -z "${commit_ref}" ]; then
+    util::get_fail_message "Missing required parameters [--branch-ref] or [--commit-ref]"
+    info::get_usage
     exit 1
 fi
-if [ -z "${1}" ] && [ -z "${2}" ]; then
-    echo "Action failed: No commit/branch references passed"
-    exit 1
-fi
+#endsection
+#section Set Up
+readonly check_only_for
+readonly branch_ref
+readonly commit_ref
+log::configure_log "${log_level:-"info"}"
+log::debug "Configured log level to [${log_level}]"
+log::debug "Received parameters: [${parameters}]"
 #endsection
 #section Execution
-check_version_sh="$(dirname "${BASH_SOURCE[0]}")/check-version/check-version.sh"
-chmod +x "${check_version_sh}"
-./"${check_version_sh}" \
-    --branch-ref "${1}" \
-    --commit-ref "${2}" \
-    --log-level "${3}" \
-    --check-only-for "${4}"
-exit "${?}"
-#endsection
+if [ -n "${branch_ref}" ]; then
+    branch="$(git branch --list | local::grep "${branch_ref}")"
+    if [ -n "${branch}" ]; then
+        log::debug "Fetching from [origin ${branch_ref}]"
+        git fetch -q -f origin "${branch_ref}"
+    else
+        log::fail "Branch [${branch_ref}] does not exist"
+    fi
+else
+    if [ -n "${commit_ref}" ]; then
+        commit="$(git rev-list --all | local::grep "${commit_ref}")"
+        if [ -z "${commit}" ]; then
+            log::fail "Commit [${commit_ref}] does not exist"
+        fi
+    fi
+fi
+for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
+    log::debug "Checking changes for [${version_file}]"
+    # shellcheck source=./version-in/*.sh
+    source "${version_file}"
+    #    if [ -n "${check_only_for}" ] && [[ "${version_file}" != *"${check_only_for/\./-}.sh" ]]; then
+    #    log::debug "CHECK ONLY FOR: ${check_only_for/,/ }"
+    #    check_on_for_formatted="${check_only_for/,/ }"
+    if util::not_contains "$(version::file_name)" "${check_only_for[@]}"; then
+        log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
+        continue
+    fi
+    check_version "${version_file}" "${branch_ref:-${commit_ref}}"
+    check_result="${?}"
+    check_results+=("${check_result}")
+    log::debug "Received exit code from version check [${check_result}]"
+done
+log::debug "Version Checks exit codes: [${check_results[*]}]"
+if util::contains 1 "${check_results[@]}"; then
+    log::fail "Version Check failed"
+fi
+if util::every 66 "${check_results[@]}"; then
+    log::fail "No changed/supported version files found"
+fi
+log::debug "Exit code [0]"
+exit 0

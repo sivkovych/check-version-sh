@@ -1,8 +1,8 @@
 #section Public API
-get_label() {
+part::label() {
     echo "MINOR VERSION"
 }
-get_index() {
+part::index() {
     echo 1
 }
 #endsection

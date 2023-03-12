@@ -1,6 +1,6 @@
 name: "Check Version"
 description: "Check whether your project version was updated in pull-request or a single commit"
-author: "Pavlo Sivkovych (https://github.com/Iseedead)"
+author: "https://github.com/Iseedead"
 branding:
   icon: hash
   color: white
@@ -10,7 +10,10 @@ inputs:
     required: false
     default: "INFO"
   check-only-for:
-    description: "A single configuration file to check for"
+    description: """
+      A list of coma separated files to check for (since GitHub Actions does not support array inputs yet).
+      Do not insert space after coma, or the list will be parsed as a separate arguments.
+      """
     required: false
 runs:
   using: "composite"
@@ -21,8 +24,8 @@ runs:
         action_sh="${{ github.action_path }}/src/action.sh"
         chmod +x "${action_sh}"
         ./"${action_sh}" \
-          ${{ github.event.pull_request.base.ref || "__NULL__" }} \
-          ${{ github.event.before || "__NULL__" }} \
-          ${{ inputs.log-level }} \
-          ${{ inputs.check-only-for }}
+          --branch-ref ${{ github.event.pull_request.base.ref }} \
+          --commit-ref ${{ github.event.before }} \
+          --log-level ${{ inputs.log-level }} \
+          --check-only-for ${{ inputs.check-only-for }}
       shell: bash

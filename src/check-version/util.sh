@@ -1,8 +1,5 @@
 #section Public API
-null() {
-    echo "__NULL__"
-}
-contains()  {
+util::contains()  {
     local look_for=${1}
     shift
     local array=("${@}")
@@ -13,7 +10,18 @@ contains()  {
     done
     return 1
 }
-every()  {
+util::not_contains() {
+    local look_for=${1}
+    shift
+    local array=("${@}")
+    for element in "${array[@]}"; do
+        if [ "${element}" == "${look_for}" ]; then
+            return 1
+        fi
+    done
+    return 0
+}
+util::every()  {
     local look_for="${1}"
     shift
     local array=("${@}")
@@ -24,23 +32,23 @@ every()  {
     done
     return 0
 }
-get_delimiter() {
+util::get_delimiter() {
     echo "${1}" |
-        local_grep -Po "[\W\D]" |
+        local::grep -Po "[\W\D]" |
         sort |
         uniq --count |
         head -1 |
         sed -e 's| ||g;s|[0-9]||g'
 }
-get_element() {
+util::get_element() {
     local delimiter
-                     delimiter="$(get_delimiter "${1}")"
+                     delimiter="$(util::get_delimiter "${1}")"
     echo "${1}" | cut -d"${delimiter}" -f"${2}"
 }
-get_fail_message() {
+util::get_fail_message() {
     printf "Script failed: %s\n\n" "${1}"
 }
-get_parts() {
+util::get_parts() {
     local current_dir="${1}"
     local parts=()
     for part in "${current_dir}"/part/*.sh; do
@@ -48,7 +56,7 @@ get_parts() {
     done
     echo "${parts[@]}"
 }
-get_sorted_parts() {
+util::get_sorted_parts() {
     local current_dir="${1}"
     local parts=()
     for part in "${current_dir}"/part/*.sh; do
@@ -59,7 +67,7 @@ get_sorted_parts() {
         local part="${parts[index]}"
         # shellcheck source=./part/*.sh
         source "${part}"
-        sorted["$(index)"]="${part}"
+        sorted["$(part::index)"]="${part}"
     done
     echo "${sorted[@]}"
 }

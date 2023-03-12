@@ -1,7 +1,7 @@
 #section Public API
-get_usage() {
+info::get_usage() {
     echo "usage:"
-    echo "    check-version --branch-ref string \\"
+    echo "    ${0} --branch-ref string \\"
     echo "                  --commit-ref string \\"
     echo "                  --log-level string \\"
     echo "                  --check-only-for string"
@@ -19,18 +19,19 @@ get_usage() {
     echo "  --log-level string (optional)          level of a log to print"
     echo "                                         (example: debug)"
     echo ""
-    echo "  --check-only-for string (optional)     a single configuration file to check for"
-    echo "                                         (example: pom.xml)"
+    echo "  --check-only-for string[] (optional)   a list of coma separated files to check for"
+    echo "                                         do not insert space after coma, "
+    echo "                                         or the list will be parsed as a separate arguments"
+    echo "                                         (example: pom.xml,package.json)"
     echo ""
 }
-get_description() {
-    local current_dir
-    current_dir=$(dirname "${BASH_SOURCE[0]}")
+info::get_description() {
     local supported_files=""
-    for version_file in "${current_dir}"/version-file/*.sh; do
-        # shellcheck source=./version-file/*.sh
+    # shellcheck disable=SC2154
+    for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
+        # shellcheck source=./version-in/*.sh
         source "${version_file}"
-        supported_files="${supported_files}  - $(name)\n"
+        supported_files="${supported_files}  - $(version::file_name)\n"
     done
     echo ""
     echo "Parses configuration files and git log to detect and ensure version changes."

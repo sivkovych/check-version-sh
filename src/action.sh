@@ -2,7 +2,9 @@
 #section Aliases
 shopt -s expand_aliases
 if [[ "${OSTYPE}" =~ ^darwin ]]; then
-    brew install --quiet grep>/dev/null
+    if ! command -v ggrep; then
+        brew install --quiet grep >/dev/null
+    fi
     alias local::grep='ggrep'
 elif [[ "${OSTYPE}" =~ ^linux ]]; then
     alias local::grep='grep'

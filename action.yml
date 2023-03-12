@@ -19,6 +19,7 @@ runs:
     - id: check-version
       name: Check Version
       run: |
+        echo "PATH: ${{ github.action_path }}"
         action_sh="${{ github.action_path }}/src/action.sh"
         chmod +x "${action_sh}"
         ./"${action_sh}" \

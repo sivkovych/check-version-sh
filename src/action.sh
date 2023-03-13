@@ -40,8 +40,8 @@ while [ ${#} -gt 0 ]; do
     fi
     shift
 done
-if [ -z "${branch_ref}" ] && [ -z "${commit_ref_before}" ] && [ -z "${commit_ref_after}" ]; then
-    util::get_fail_message "Missing required parameters [--branch-ref] or [--commit-ref-before] and [--commit-ref-after]"
+if [ -z "${branch_ref}" ] && [ -z "${commit_ref}" ]; then
+    util::get_fail_message "Missing required parameters [--branch-ref] or [--commit-ref]"
     info::get_usage
     exit 1
 fi
@@ -49,8 +49,7 @@ fi
 #section Set Up
 readonly check_only_for
 readonly branch_ref
-readonly commit_ref_before
-readonly commit_ref_after
+readonly commit_ref
 log::configure_log "${log_level:-"info"}"
 log::debug "Configured log level to [${log_level}]"
 log::debug "Received parameters: [${parameters}]"
@@ -60,14 +59,12 @@ if [ -n "${branch_ref}" ]; then
     log::debug "Fetching from [origin ${branch_ref}]"
     git fetch -q -f origin "${branch_ref}"
 else
-    if [ -n "${commit_ref_before}" ] && [ -n "${commit_ref_after}" ]; then
+    if [ -n "${commit_ref}" ]; then
         branch="$(git branch --show-current)"
         log::debug "GIT FETCH --depth=20 origin ${branch}:refs/remotes/origin/${branch}"
-        git fetch --depth=20 origin "${branch}":refs/remotes/origin/"${branch}"
-        log::debug "GIT DIFF ${commit_ref_before}..${commit_ref_after}"
-        git diff --name-only "${commit_ref_before}".."${commit_ref_after}"
-        log::debug "GIT DIFF ${commit_ref_before}..HEAD"
-        git diff --name-only "${commit_ref_before}"..HEAD
+        git fetch -f --depth=2 origin "+${commit_ref}:refs/remotes/origin/${branch}"
+        log::debug "GIT DIFF ${commit_ref}"
+        git diff --name-only "${commit_ref}"
 
 #        log::debug "GIT FETCH"
 #        git fetch -f origin

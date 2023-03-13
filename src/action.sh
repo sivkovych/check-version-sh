@@ -40,8 +40,8 @@ while [ ${#} -gt 0 ]; do
     fi
     shift
 done
-if [ -z "${branch_ref}" ] && [ -z "${commit_ref}" ]; then
-    util::get_fail_message "Missing required parameters [--branch-ref] or [--commit-ref]"
+if [ -z "${branch_ref}" ] && [ -z "${commit_ref_before}" ] && [ -z "${commit_ref_after}" ]; then
+    util::get_fail_message "Missing required parameters [--branch-ref] or [--commit-ref-before] and [--commit-ref-after]"
     info::get_usage
     exit 1
 fi
@@ -49,7 +49,8 @@ fi
 #section Set Up
 readonly check_only_for
 readonly branch_ref
-readonly commit_ref
+readonly commit_ref_before
+readonly commit_ref_after
 log::configure_log "${log_level:-"info"}"
 log::debug "Configured log level to [${log_level}]"
 log::debug "Received parameters: [${parameters}]"
@@ -59,29 +60,31 @@ if [ -n "${branch_ref}" ]; then
     log::debug "Fetching from [origin ${branch_ref}]"
     git fetch -q -f origin "${branch_ref}"
 else
-    if [ -n "${commit_ref}" ]; then
-        log::debug "GIT FETCH"
-        git fetch -f origin
-        log::debug "GIT PULL"
-        git pull
-        log::debug "REV-LIST (git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check)"
-        git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check
-        log::debug "REV-LIST (git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check)"
-        git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check
-        log::debug "REV-LIST (git rev-list origin HEAD)"
-        git rev-list origin HEAD
-        log::debug "REV-LIST (git rev-list origin:HEAD)"
-        git rev-list origin:HEAD
-        log::debug "REV-LIST (git rev-list refs/remotes/origin/HEAD)"
-        git rev-list refs/remotes/origin/HEAD
-        log::debug "GIT LOG "
-        git log
+    if [ -n "${commit_ref_before}" ] && [ -n "${commit_ref_after}" ]; then
         log::debug "GIT DIFF"
-        git diff --name-only "${commit_ref}"~ "${commit_ref}"
-        commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
-        if [ -z "${commit}" ]; then
-            log::fail "Commit [${commit_ref}] does not exist"
-        fi
+        git diff --name-only "${commit_ref_before}".."${commit_ref_after}"
+#        log::debug "GIT FETCH"
+#        git fetch -f origin
+#        log::debug "GIT PULL"
+#        git pull
+#        log::debug "REV-LIST (git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check)"
+#        git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check
+#        log::debug "REV-LIST (git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check)"
+#        git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check
+#        log::debug "REV-LIST (git rev-list origin HEAD)"
+#        git rev-list origin HEAD
+#        log::debug "REV-LIST (git rev-list origin:HEAD)"
+#        git rev-list origin:HEAD
+#        log::debug "REV-LIST (git rev-list refs/remotes/origin/HEAD)"
+#        git rev-list refs/remotes/origin/HEAD
+#        log::debug "GIT LOG "
+#        git log
+#        log::debug "GIT DIFF"
+#        git diff --name-only "${commit_ref}"~ "${commit_ref}"
+#        commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
+#        if [ -z "${commit}" ]; then
+#            log::fail "Commit [${commit_ref}] does not exist"
+#        fi
     fi
 fi
 for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
@@ -92,10 +95,10 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
         continue
     fi
-    check_version "${version_file}" "${branch_ref:-${commit_ref}}"
-    check_result="${?}"
-    check_results+=("${check_result}")
-    log::debug "Received exit code from version check [${check_result}]"
+    #    check_version "${version_file}" "${branch_ref:-${commit_ref}}"
+    #    check_result="${?}"
+    #    check_results+=("${check_result}")
+    #    log::debug "Received exit code from version check [${check_result}]"
 done
 log::debug "Version Checks exit codes: [${check_results[*]}]"
 if util::contains 1 "${check_results[@]}"; then

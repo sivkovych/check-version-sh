@@ -27,7 +27,8 @@ runs:
         chmod +x src/action.sh
         ./src/action.sh \
           --branch-ref ${{ github.event.pull_request.base.ref }} \
-          --commit-ref ${{ github.event.before }} \
+          --commit-ref-before ${{ github.event.before }} \
+          --commit-ref-after ${{ github.event.after }} \
           --log-level ${{ inputs.log-level }} \
           --check-only-for ${{ inputs.check-only-for }}
       shell: bash

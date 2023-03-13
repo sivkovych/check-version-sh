@@ -63,8 +63,7 @@ else
     if [ -n "${commit_ref_before}" ] && [ -n "${commit_ref_after}" ]; then
         log::debug "GIT BRANCH"
         branch="$(git branch | sed -e 's| ||g; s|\*||g')"
-        log::debug "GIT CHECKOUT ${branch}"
-        git checkout "${branch}"
+        git fetch --depth 2 "${branch}"
         log::debug "GIT DIFF ${commit_ref_before}..${commit_ref_after}"
         git diff --name-only "${commit_ref_before}".."${commit_ref_after}"
         log::debug "GIT DIFF ${commit_ref_before}..HEAD"

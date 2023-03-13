@@ -74,6 +74,8 @@ else
         git rev-list refs/remotes/origin/HEAD
         log::debug "GIT LOG "
         git log
+        log::debug "GIT DIFF"
+        git diff --name-only b76451bd30aa3f9c737e592ce443c6438d9c0a59
         commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
         if [ -z "${commit}" ]; then
             log::fail "Commit [${commit_ref}] does not exist"

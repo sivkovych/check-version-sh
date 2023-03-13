@@ -57,9 +57,10 @@ log::debug "Received parameters: [${parameters}]"
 #section Execution
 
 current_branch="$(git branch --show-current)"
-log::debug "Fetching from [origin ${branch_ref:-commit_ref}:refs/remotes/origin/${current_branch}]"
-git fetch -f origin "${branch_ref:-${commit_ref}}:refs/remotes/origin/${current_branch}"
-
+ref="${branch_ref:-commit_ref}"
+log::debug "Fetching from [origin ${ref}:refs/remotes/origin/${current_branch}]"
+git fetch -f origin "${ref}:refs/remotes/origin/${current_branch}"
+git diff --name-only "${ref}"
 #if [ -n "${branch_ref}" ]; then
 #    log::debug "Fetching from [${ORIGIN} ${branch_ref}]"
 #    git fetch -q -f "${ORIGIN}" "${branch_ref}"

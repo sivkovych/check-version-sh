@@ -75,7 +75,7 @@ else
         log::debug "GIT LOG "
         git log
         log::debug "GIT DIFF"
-        git diff --name-only b76451bd30aa3f9c737e592ce443c6438d9c0a59
+        git diff --name-only "${commit_ref}"~ "${commit_ref}"
         commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
         if [ -z "${commit}" ]; then
             log::fail "Commit [${commit_ref}] does not exist"

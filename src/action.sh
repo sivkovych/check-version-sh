@@ -50,22 +50,24 @@ fi
 readonly check_only_for
 readonly branch_ref
 readonly commit_ref
+readonly ORIGIN="origin"
 log::configure_log "${log_level:-"info"}"
 log::debug "Configured log level to [${log_level}]"
 log::debug "Received parameters: [${parameters}]"
 #endsection
 #section Execution
 if [ -n "${branch_ref}" ]; then
-    log::debug "Fetching from [origin ${branch_ref}]"
-    git fetch -q -f origin "${branch_ref}"
+    log::debug "Fetching from [${ORIGIN} ${branch_ref}]"
+    git fetch -q -f "${ORIGIN}" "${branch_ref}"
 else
     if [ -n "${commit_ref}" ]; then
         branch="$(git branch --show-current)"
         log::debug "GIT FETCH fetch -f origin +${commit_ref}:refs/remotes/origin/${branch}"
-        git fetch -f origin "+${commit_ref}:refs/remotes/origin/${branch}"
+        git fetch -f "${ORIGIN}" "+${commit_ref}:refs/remotes/origin/${branch}"
         log::debug "GIT DIFF ${commit_ref}"
         git diff --name-only "${commit_ref}"
-
+        commit="$(git rev-list --all "${ORIGIN}" | local::grep "${commit_ref}")"
+        log::debug "COMMIT: ${commit}"
         #        log::debug "GIT FETCH"
         #        git fetch -f origin
         #        log::debug "GIT PULL"

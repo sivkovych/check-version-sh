@@ -61,12 +61,14 @@ if [ -n "${branch_ref}" ]; then
     git fetch -q -f origin "${branch_ref}"
 else
     if [ -n "${commit_ref_before}" ] && [ -n "${commit_ref_after}" ]; then
+        log::debug "GIT BRANCH"
+        branch="$(git branch | sed -e 's| ||g; s|\*||g')"
+        log::debug "GIT CHECKOUT ${branch}"
+        git checkout "${branch}"
         log::debug "GIT DIFF ${commit_ref_before}..${commit_ref_after}"
         git diff --name-only "${commit_ref_before}".."${commit_ref_after}"
         log::debug "GIT DIFF ${commit_ref_before}..HEAD"
         git diff --name-only "${commit_ref_before}"..HEAD
-        log::debug "GIT BRANCH"
-        git branch
 #        log::debug "GIT FETCH"
 #        git fetch -f origin
 #        log::debug "GIT PULL"

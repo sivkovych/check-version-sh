@@ -36,7 +36,7 @@ check_version() {
     log::info "Version changed from [${old_version}] to [${new_version}] in [${file_name}]"
     local sorted_parts
                         # shellcheck disable=SC2207
-                        sorted_parts=($(get_sorted_parts "${PROJECT_DIR}"))
+                        sorted_parts=($(util::sorted_parts "${PROJECT_DIR}"))
     local differences=()
     for part in "${sorted_parts[@]}"; do
         # shellcheck source=./part/*.sh
@@ -45,10 +45,10 @@ check_version() {
                     label="$(part::label)"
         local index=$(($(part::index) + 1))
         local old_part
-                       old_part=$(get_element "${old_version}" "${index}")
+                       old_part=$(string::element "${old_version}" "${index}")
         log::debug "Identified old [${label}] -- [${old_part}]"
         local new_part
-                       new_part=$(get_element "${new_version}" "${index}")
+                       new_part=$(string::element "${new_version}" "${index}")
         log::debug "Identified new [${label}] -- [${new_part}]"
         local difference=$((new_part - old_part))
         differences+=("${label}")

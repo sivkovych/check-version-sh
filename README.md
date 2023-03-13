@@ -45,7 +45,7 @@ jobs:
 
 ### Parameters
 
-See [action.yml](action.yml) or [info.sh](src/check-version/info.sh).
+See [action.yml](action.yml) or [info.sh](src/check-version/util/info.sh).
 
 - log-level   
   Logging level that will be used by the shell script

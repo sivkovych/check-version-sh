@@ -12,9 +12,11 @@ fi
 #endsection
 #section Imports
 readonly PROJECT_DIR="$(dirname "${0}")/check-version"
-source "${PROJECT_DIR}"/util.sh
-source "${PROJECT_DIR}"/log.sh
-source "${PROJECT_DIR}"/info.sh
+source "${PROJECT_DIR}"/util/string.sh
+source "${PROJECT_DIR}"/util/array.sh
+source "${PROJECT_DIR}"/util/util.sh
+source "${PROJECT_DIR}"/util/log.sh
+source "${PROJECT_DIR}"/util/info.sh
 source "${PROJECT_DIR}"/check-version.sh
 #endsection
 #section Parameter Parsing
@@ -41,7 +43,7 @@ while [ ${#} -gt 0 ]; do
     shift
 done
 if [ -z "${branch_ref}" ] && [ -z "${commit_ref}" ]; then
-    util::get_fail_message "Missing required parameters [--branch-ref] or [--commit-ref]"
+    util::fail_message "Missing required parameters [--branch-ref] or [--commit-ref]"
     info::get_usage
     exit 1
 fi
@@ -63,7 +65,7 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
     log::debug "Checking changes for [${version_file}]"
     # shellcheck source=./version-in/*.sh
     source "${version_file}"
-    if util::not_contains "$(version::file_name)" "${check_only_for[@]}" && [ -n "${check_only_for}" ]; then
+    if array::not_contains "$(version::file_name)" "${check_only_for[@]}" && [ -n "${check_only_for}" ]; then
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
         continue
     fi
@@ -73,13 +75,13 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
     log::debug "Received exit code from version check [${check_result}]"
 done
 log::debug "Version Checks exit codes: [${check_results[*]}]"
-if util::contains 1 "${check_results[@]}"; then
+if array::contains 1 "${check_results[@]}"; then
     log::fail "Version Check failed"
 fi
-if util::every 66 "${check_results[@]}"; then
+if array::every 66 "${check_results[@]}"; then
     log::fail "No changed/supported version files found"
 fi
-if ! util::every 0 "${check_results[@]}" && [ -n "${check_only_for}" ]; then
+if ! array::every 0 "${check_results[@]}" && [ -n "${check_only_for}" ]; then
     log::fail "Not all specified file checks were successful"
 fi
 log::debug "Exit code [0]"

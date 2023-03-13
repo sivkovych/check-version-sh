@@ -76,11 +76,11 @@ log::debug "Version Checks exit codes: [${check_results[*]}]"
 if util::contains 1 "${check_results[@]}"; then
     log::fail "Version Check failed"
 fi
-if ! util::every 0 "${check_results[@]}" && [ -n "${check_only_for}" ]; then
-    log::fail "Not all specified file checks were successful"
-fi
 if util::every 66 "${check_results[@]}"; then
     log::fail "No changed/supported version files found"
+fi
+if ! util::every 0 "${check_results[@]}" && [ -n "${check_only_for}" ]; then
+    log::fail "Not all specified file checks were successful"
 fi
 log::debug "Exit code [0]"
 exit 0

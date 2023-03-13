@@ -55,46 +55,10 @@ log::debug "Configured log level to [${log_level}]"
 log::debug "Received parameters: [${parameters}]"
 #endsection
 #section Execution
-
 current_branch="$(git branch --show-current)"
 ref="${branch_ref:-${commit_ref}}"
 log::debug "Fetching from [origin ${ref}:refs/remotes/origin/${current_branch}]"
-git fetch -f origin "${ref}:refs/remotes/origin/${current_branch}"
-git diff --name-only "${ref}"
-#if [ -n "${branch_ref}" ]; then
-#    log::debug "Fetching from [${ORIGIN} ${branch_ref}]"
-#    git fetch -q -f "${ORIGIN}" "${branch_ref}"
-#else
-#    if [ -n "${commit_ref}" ]; then
-#        branch="$(git branch --show-current)"
-#        log::debug "GIT FETCH fetch -f origin +${commit_ref}:refs/remotes/origin/${branch}"
-#        git fetch -f "${ORIGIN}" "+${commit_ref}:refs/remotes/origin/${branch}"
-#        log::debug "GIT DIFF ${commit_ref}"
-#        git diff --name-only "${commit_ref}"
-        #        log::debug "GIT FETCH"
-        #        git fetch -f origin
-        #        log::debug "GIT PULL"
-        #        git pull
-        #        log::debug "REV-LIST (git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check)"
-        #        git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check
-        #        log::debug "REV-LIST (git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check)"
-        #        git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check
-        #        log::debug "REV-LIST (git rev-list origin HEAD)"
-        #        git rev-list origin HEAD
-        #        log::debug "REV-LIST (git rev-list origin:HEAD)"
-        #        git rev-list origin:HEAD
-        #        log::debug "REV-LIST (git rev-list refs/remotes/origin/HEAD)"
-        #        git rev-list refs/remotes/origin/HEAD
-        #        log::debug "GIT LOG "
-        #        git log
-        #        log::debug "GIT DIFF"
-        #        git diff --name-only "${commit_ref}"~ "${commit_ref}"
-        #        commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
-        #        if [ -z "${commit}" ]; then
-        #            log::fail "Commit [${commit_ref}] does not exist"
-        #        fi
-#    fi
-#fi
+git fetch -fq origin "${ref}:refs/remotes/origin/${current_branch}"
 for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
     log::debug "Checking changes for [${version_file}]"
     # shellcheck source=./version-in/*.sh
@@ -103,10 +67,10 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
         continue
     fi
-    #    check_version "${version_file}" "${branch_ref:-${commit_ref}}"
-    #    check_result="${?}"
-    #    check_results+=("${check_result}")
-    #    log::debug "Received exit code from version check [${check_result}]"
+    check_version "${version_file}" "${ref}"
+    check_result="${?}"
+    check_results+=("${check_result}")
+    log::debug "Received exit code from version check [${check_result}]"
 done
 log::debug "Version Checks exit codes: [${check_results[*]}]"
 if util::contains 1 "${check_results[@]}"; then

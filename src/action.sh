@@ -61,33 +61,33 @@ if [ -n "${branch_ref}" ]; then
 else
     if [ -n "${commit_ref}" ]; then
         branch="$(git branch --show-current)"
-        log::debug "GIT FETCH --depth=20 origin ${branch}:refs/remotes/origin/${branch}"
-        git fetch -f --depth=2 origin "+${commit_ref}:refs/remotes/origin/${branch}"
+        log::debug "GIT FETCH fetch -f origin +${commit_ref}:refs/remotes/origin/${branch}"
+        git fetch -f origin "+${commit_ref}:refs/remotes/origin/${branch}"
         log::debug "GIT DIFF ${commit_ref}"
         git diff --name-only "${commit_ref}"
 
-#        log::debug "GIT FETCH"
-#        git fetch -f origin
-#        log::debug "GIT PULL"
-#        git pull
-#        log::debug "REV-LIST (git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check)"
-#        git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check
-#        log::debug "REV-LIST (git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check)"
-#        git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check
-#        log::debug "REV-LIST (git rev-list origin HEAD)"
-#        git rev-list origin HEAD
-#        log::debug "REV-LIST (git rev-list origin:HEAD)"
-#        git rev-list origin:HEAD
-#        log::debug "REV-LIST (git rev-list refs/remotes/origin/HEAD)"
-#        git rev-list refs/remotes/origin/HEAD
-#        log::debug "GIT LOG "
-#        git log
-#        log::debug "GIT DIFF"
-#        git diff --name-only "${commit_ref}"~ "${commit_ref}"
-#        commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
-#        if [ -z "${commit}" ]; then
-#            log::fail "Commit [${commit_ref}] does not exist"
-#        fi
+        #        log::debug "GIT FETCH"
+        #        git fetch -f origin
+        #        log::debug "GIT PULL"
+        #        git pull
+        #        log::debug "REV-LIST (git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check)"
+        #        git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check
+        #        log::debug "REV-LIST (git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check)"
+        #        git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check
+        #        log::debug "REV-LIST (git rev-list origin HEAD)"
+        #        git rev-list origin HEAD
+        #        log::debug "REV-LIST (git rev-list origin:HEAD)"
+        #        git rev-list origin:HEAD
+        #        log::debug "REV-LIST (git rev-list refs/remotes/origin/HEAD)"
+        #        git rev-list refs/remotes/origin/HEAD
+        #        log::debug "GIT LOG "
+        #        git log
+        #        log::debug "GIT DIFF"
+        #        git diff --name-only "${commit_ref}"~ "${commit_ref}"
+        #        commit="$(git rev-list --all origin | local::grep "${commit_ref}")"
+        #        if [ -z "${commit}" ]; then
+        #            log::fail "Commit [${commit_ref}] does not exist"
+        #        fi
     fi
 fi
 for version_file in "${PROJECT_DIR}"/version-in/*.sh; do

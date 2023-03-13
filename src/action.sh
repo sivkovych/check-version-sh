@@ -60,6 +60,8 @@ if [ -n "${branch_ref}" ]; then
     git fetch -q -f origin "${branch_ref}"
 else
     if [ -n "${commit_ref}" ]; then
+        log::debug "GIT FETCH"
+        git fetch -f origin
         log::debug "REV-LIST (git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check)"
         git rev-list origin feature/readme-n-flow-n-all-specified-mandatory-check
         log::debug "REV-LIST (git rev-list origin/feature/readme-n-flow-n-all-specified-mandatory-check)"

@@ -7,7 +7,7 @@ git::fetch() {(
     set -e
     local ref="${1}"
     local branch
-                  branch=${$(git::branch):-${ref}}
+                  branch=${"$(git::branch)":-${ref}}
     log::debug "Fetching from [origin ${ref}:refs/remotes/origin/${branch}]"
     git fetch -fq origin "${ref}:refs/remotes/origin/${branch}"
 )}

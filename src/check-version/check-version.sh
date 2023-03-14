@@ -1,5 +1,5 @@
 #section Public API
-check_version() {
+check_version::apply() {
     local version_file="${1}"
     local ref="${2}"
     # shellcheck source=./version-in/*.sh
@@ -8,14 +8,14 @@ check_version() {
                     file_name=$(version::file_name)
     log::debug "Looking for [${file_name}] in git diff"
     local path
-               path=$(git diff --name-only "${ref}" | local::grep "^${file_name}$")
+               path=$(git::diff_files "${ref}" | local::grep "^${file_name}$")
     if [ -z "${path}" ]; then
         log::debug "Cannot find [${file_name}] in changed files"
         return 66
     fi
     log::debug "Found [${path}] in git diff"
     local git_diff
-                   git_diff=$(git diff "${ref}" "${path}" | sed -e 's| ||g')
+                   git_diff=$(git::diff "${ref}" "${path}" | sed -e 's| ||g')
     local old_version
                        old_version=$(version::old "$git_diff")
     local new_version
@@ -36,7 +36,7 @@ check_version() {
     log::info "Version changed from [${old_version}] to [${new_version}] in [${file_name}]"
     local sorted_parts
                         # shellcheck disable=SC2207
-                        sorted_parts=($(get_sorted_parts "${PROJECT_DIR}"))
+                        sorted_parts=($(util::sorted_parts "${PROJECT_DIR}"))
     local differences=()
     for part in "${sorted_parts[@]}"; do
         # shellcheck source=./part/*.sh
@@ -45,22 +45,22 @@ check_version() {
                     label="$(part::label)"
         local index=$(($(part::index) + 1))
         local old_part
-                       old_part=$(get_element "${old_version}" "${index}")
+                       old_part=$(string::element "${old_version}" "${index}")
         log::debug "Identified old [${label}] -- [${old_part}]"
         local new_part
-                       new_part=$(get_element "${new_version}" "${index}")
+                       new_part=$(string::element "${new_version}" "${index}")
         log::debug "Identified new [${label}] -- [${new_part}]"
         local difference=$((new_part - old_part))
         differences+=("${label}")
         differences+=("${difference}")
     done
     log::debug "Calculated differences: [${differences[*]}]"
-    _get_comparison "${differences[@]}"
+    check_version::_comparison "${differences[@]}"
     return "${?}"
 }
 #endsection
 #section Private API
-_get_comparison() {
+check_version::_comparison() {
     while [ ${#} -gt 0 ]; do
         local label="${1}"
         local difference="${2}"

@@ -5,10 +5,11 @@ git::branch() {(
 )}
 git::fetch() {(
     set -e
+    local ref="${1}"
     local branch
-                  branch="$(git::branch)"
-    log::debug "Fetching from [origin ${1}:refs/remotes/origin/${branch}]"
-    git fetch -fq origin "${1}:refs/remotes/origin/${branch}"
+                  branch=${"$(git::branch)":-"${ref}"}
+    log::debug "Fetching from [origin ${ref}:refs/remotes/origin/${branch}]"
+    git fetch -fq origin "${ref}:refs/remotes/origin/${branch}"
 )}
 git::diff_files() {(
     set -e

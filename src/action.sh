@@ -51,7 +51,7 @@ readonly commit_ref
 log::configure_log "${log_level:-"info"}"
 log::debug "Configured log level to [${log_level}]"
 log::debug "Received parameters: [${parameters}]"
-if array::is_empty "${branch_ref}" "${commit_ref}"; then
+if [ -z "${branch_ref}" ] && [ -z "${commit_ref}" ]; then
     log::shallow_fail "Missing required parameters [--branch-ref] or [--commit-ref]"
     info::get_usage
     exit 1
@@ -70,7 +70,7 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
         continue
     fi
-    diff_ref=$(array::is_empty "${branch_ref}" && echo "${commit_ref}" || echo "origin/${branch_ref}")
+    diff_ref=$([ -z "${branch_ref}" ] && echo "${commit_ref}" || echo "origin/${branch_ref}")
     check_version::apply "${version_file}" "${diff_ref}"
     check_result="${?}"
     check_results+=("${check_result}")

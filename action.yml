@@ -17,8 +17,6 @@ runs:
   using: "composite"
   steps:
     - run: |
-#        echo "${{ github.action_path }}" >> $GITHUB_PATH
-        echo "${GITHUB_PATH}"
         ls -la
       shell: bash
     - id: check-version

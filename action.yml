@@ -16,12 +16,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
     - id: check-version
       name: Check Version Sh
-      run: |
-        ./src/action.sh \
-          --branch-ref ${{ github.event.pull_request.base.ref }} \
-          --commit-ref ${{ github.event.before }} \
-          --log-level ${{ inputs.log-level }} \
-          --check-only-for ${{ inputs.check-only-for }}
+      run: action.sh \
+        --branch-ref ${{ github.event.pull_request.base.ref }} \
+        --commit-ref ${{ github.event.before }} \
+        --log-level ${{ inputs.log-level }} \
+        --check-only-for ${{ inputs.check-only-for }}
       shell: bash

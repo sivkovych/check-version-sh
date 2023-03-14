@@ -1,6 +1,6 @@
 # check-version-sh
 
-Version: 2.0.0  
+Version: 2.0.1  
 Action functionality:
 
 - Ensure version changes regardless base branch on pull request
@@ -9,9 +9,9 @@ Action functionality:
 ## Limitations
 
 - Currently supported build configuration files
-    - pom.xml
-    - package.json
-    - README.md
+    - `pom.xml`
+    - `package.json`
+    - `README.md`
 - Currently supported numeric versions only
 - MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 
@@ -48,8 +48,8 @@ jobs:
 
 See [action.yml](action.yml) or [info.sh](src/check-version/info.sh).
 
-- log-level   
+- `log-level`   
   Logging level that will be used by the shell script
-- check-only-for    
+- `check-only-for`    
   A list of coma separated files to check for (since GitHub Actions does not support array inputs yet).
   Do not insert space after coma, or the list will be parsed as a separate arguments.

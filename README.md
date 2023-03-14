@@ -1,6 +1,6 @@
 # check-version
 
-Version: 1.0.2  
+Version: 1.1.2  
 Action functionality:
 
 - Ensure version changes regardless base branch on pull request

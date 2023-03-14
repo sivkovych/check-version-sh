@@ -28,13 +28,16 @@ log::error() {
     return 1
 }
 log::fail() {
+    log::shallow_fail "${1}"
+    exit 1
+}
+log::shallow_fail() {
     local message="${1}"
     if log::_is_not_level "debug"; then
         message="${message}, re-run with [--log-level debug] to get more information"
     fi
     log::error "${message}"
     log::debug "Exit code [1]"
-    exit 1
 }
 #endsection
 #section Private API

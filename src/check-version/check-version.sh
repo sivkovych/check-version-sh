@@ -9,7 +9,7 @@ check_version::apply() {
     log::debug "Looking for [${file_name}] in git diff"
     local path
                path=$(git::diff_files "${ref}" | local::grep "^${file_name}$")
-    if [ -z "${path}" ]; then
+    if array::is_empty "${path}"; then
         log::debug "Cannot find [${file_name}] in changed files"
         return 66
     fi
@@ -20,16 +20,16 @@ check_version::apply() {
                        old_version=$(version::old "$git_diff")
     local new_version
                       new_version=$(version::new "$git_diff")
-    if [ -n "${old_version}" ] && [ -z "${new_version}" ]; then
+    if array::is_not_empty "${old_version}" && array::is_empty "${new_version}"; then
         log::error "New version in [${file_name}] is empty or non-numeric"
         return 1
-    elif [ -z "${old_version}" ] && [ -z "${new_version}" ]; then
+    elif array::is_empty "${old_version}" "${new_version}"; then
         log::error "No changed version in [${file_name}]"
         return 1
-    elif [ -z "${old_version}" ] && [ -n "${new_version}" ]; then
+    elif array::is_empty "${old_version}" && array::is_not_empty "${new_version}"; then
         log::info "File [${file_name}] was just added with the version [${new_version}]"
         return 0
-    elif [ -z "${old_version}" ] || [ -z "${new_version}" ]; then
+    elif array::is_empty "${old_version}" || array::is_empty "${new_version}"; then
         log::error "[${file_name}] was changed but version is the same"
         return 1
     fi

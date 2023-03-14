@@ -70,7 +70,7 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
         continue
     fi
-    diff_ref=$(array::is_empty "${branch_ref}" && echo "${commit_ref}" || echo "origin ${branch_ref}")
+    diff_ref=$(array::is_empty "${branch_ref}" && echo "${commit_ref}" || echo "origin/${branch_ref}")
     check_version::apply "${version_file}" "${diff_ref}"
     check_result="${?}"
     check_results+=("${check_result}")

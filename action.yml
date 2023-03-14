@@ -1,5 +1,5 @@
 name: "Check Version Sh"
-description: "Check whether your project version was updated in pull-request or a single commit"
+description: "Check whether your project version was updated in a pull-request or a single commit"
 author: "https://github.com/sivkovych"
 branding:
   icon: hash
@@ -16,9 +16,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: |
-        ls -la
-      shell: bash
     - id: check-version
       name: Check Version Sh
       run: |

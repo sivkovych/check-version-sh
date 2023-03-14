@@ -19,7 +19,7 @@ info::get_usage() {
     echo "  --log-level string (optional)          level of a log to print"
     echo "                                         (example: debug)"
     echo ""
-    echo "  --check-only-for string[] (optional)   a list of coma separated files to check for"
+    echo "  --check-only-for string (optional)     a list of coma separated files to check for"
     echo "                                         do not insert space after coma, "
     echo "                                         or the list will be parsed as a separate arguments"
     echo "                                         (example: pom.xml,package.json)"

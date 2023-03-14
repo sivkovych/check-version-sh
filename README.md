@@ -1,6 +1,6 @@
 # check-version-sh
 
-Version: 1.2.2  
+Version: 2.0.0  
 Action functionality:
 
 - Ensure version changes regardless base branch on pull request
@@ -37,7 +37,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: actions/check-version@1
+      uses: sivkovych/check-version-sh@v2
       with:
         log-level: "INFO"
         check-only-for: "pom.xml,package.json"

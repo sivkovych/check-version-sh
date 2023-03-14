@@ -4,9 +4,9 @@ on:
     branches:
       - main
       - development
-      - feature/*
-      - release/*
-      - hotfix/*
+      - feature*
+      - release*
+      - hotfix*
 jobs:
   check-version-increment:
     runs-on: ${{ matrix.os }}

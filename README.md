@@ -1,6 +1,6 @@
 # check-version
 
-Version: 1.1.2  
+Version: 1.2.2  
 Action functionality:
 
 - Ensure version changes regardless base branch on pull request
@@ -13,6 +13,7 @@ Action functionality:
     - package.json
     - README.md
 - Currently supported numeric versions only
+- MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 
 ## Usage
 

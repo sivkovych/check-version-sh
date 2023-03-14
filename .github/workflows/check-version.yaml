@@ -21,15 +21,3 @@ jobs:
         with:
           log-level: "TRACE"
           check-only-for: "README.md"
-  approve-pr:
-    needs: check-version-sh
-    runs-on: ubuntu-latest
-    steps:
-      - name: Approve PR
-        uses: juliangruber/approve-pull-request-action@v2.0.3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: 1
-
-
-

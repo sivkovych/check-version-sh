@@ -1,6 +1,6 @@
 # check-version-sh
 
-Version: 2.0.2
+Version: 1.0.0     
 Action functionality:
 
 - Ensure version changes regardless base branch on pull request

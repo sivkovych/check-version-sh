@@ -1,0 +1,27 @@
+name: "Check Version Sh"
+description: "Check whether your project version was updated in a pull-request or a single commit"
+author: "https://github.com/sivkovych"
+branding:
+  icon: hash
+  color: white
+inputs:
+  log-level:
+    description: "Logging level that will be used by the script"
+    required: false
+    default: "INFO"
+  check-only-for:
+    description: "A list of coma separated files to check for (since GitHub Actions does not support array inputs yet).
+      Do not insert space after coma, or the list will be parsed as a separate arguments."
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - id: check-version
+      name: Check Version Sh
+      run: |
+        ${{ github.action_path }}/src/action.sh \
+          --branch-ref ${{ github.event.pull_request.base.ref }} \
+          --commit-ref ${{ github.event.before }} \
+          --log-level ${{ inputs.log-level }} \
+          --check-only-for ${{ inputs.check-only-for }}
+      shell: bash

@@ -1,0 +1,23 @@
+name: Check Version Increment
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+      - feature*
+      - release*
+      - hotfix*
+jobs:
+  check-version-sh:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Check Version Sh
+        uses: ./
+        with:
+          log-level: "TRACE"
+          check-only-for: "README.md"

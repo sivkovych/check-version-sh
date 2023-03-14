@@ -1,6 +1,6 @@
 name: "Check Version Sh"
 description: "Check whether your project version was updated in pull-request or a single commit"
-author: "https://github.com/Iseedead"
+author: "https://github.com/sivkovych"
 branding:
   icon: hash
   color: white

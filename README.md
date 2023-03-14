@@ -1,4 +1,4 @@
-# check-version
+# check-version-sh
 
 Version: 1.2.2  
 Action functionality:
@@ -18,7 +18,7 @@ Action functionality:
 ## Usage
 
 Make sure to check out first since the script needs some files to check.   
-Check Version action will exit with code `0` if check
+Check Version Sh action will exit with code `0` if check
 
 - for all specified (with optional `check-only-for` option) files were successful
 - for at least one present (from all supported version files) file was successful

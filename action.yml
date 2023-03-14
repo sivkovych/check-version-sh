@@ -16,13 +16,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    #    - name: Dump GitHub context
-    #      env:
-    #        GITHUB_CONTEXT: ${{ toJSON(github) }}
-    #      run: echo "$GITHUB_CONTEXT"
-    #      shell: bash
     - id: check-version
-      name: Check Version
+      name: Check Version Sh
       run: |
         chmod +x src/action.sh
         ./src/action.sh \

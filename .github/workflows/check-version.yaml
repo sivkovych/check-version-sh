@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Check Version
+      - name: Check Version Sh
         uses: ./
         with:
           log-level: "TRACE"

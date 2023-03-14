@@ -12,11 +12,12 @@ fi
 #endsection
 #section Imports
 readonly PROJECT_DIR="$(dirname "${0}")/check-version"
-source "${PROJECT_DIR}"/util/string.sh
-source "${PROJECT_DIR}"/util/array.sh
-source "${PROJECT_DIR}"/util/util.sh
-source "${PROJECT_DIR}"/util/log.sh
-source "${PROJECT_DIR}"/util/info.sh
+source "${PROJECT_DIR}"/string.sh
+source "${PROJECT_DIR}"/array.sh
+source "${PROJECT_DIR}"/util.sh
+source "${PROJECT_DIR}"/git.sh
+source "${PROJECT_DIR}"/log.sh
+source "${PROJECT_DIR}"/info.sh
 source "${PROJECT_DIR}"/check-version.sh
 #endsection
 #section Parameter Parsing
@@ -57,10 +58,10 @@ log::debug "Configured log level to [${log_level}]"
 log::debug "Received parameters: [${parameters}]"
 #endsection
 #section Execution
-current_branch="$(git branch --show-current)"
 ref="${branch_ref:-${commit_ref}}"
-log::debug "Fetching from [origin ${ref}:refs/remotes/origin/${current_branch}]"
-git fetch -fq origin "${ref}:refs/remotes/origin/${current_branch}"
+if ! git::fetch "${ref}"; then
+    log::fail "Git Fetch failed for [${ref}]"
+fi
 for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
     log::debug "Checking changes for [${version_file}]"
     # shellcheck source=./version-in/*.sh
@@ -69,7 +70,7 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
         continue
     fi
-    check_version "${version_file}" "${ref}"
+    check_version::apply "${version_file}" "${ref}"
     check_result="${?}"
     check_results+=("${check_result}")
     log::debug "Received exit code from version check [${check_result}]"

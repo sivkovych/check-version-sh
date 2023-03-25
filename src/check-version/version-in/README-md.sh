@@ -12,6 +12,6 @@ version::new() {
 #section Private API
 version::_get() {
     echo "${1}" |
-        local::grep -Po "(?<=^${2}Version:)(.+?)(?=$)"
+        local::grep -m 1 -Po "(?<=^${2}Version:)(.+?)(?=$)"
 }
 #endsection

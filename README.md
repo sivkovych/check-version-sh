@@ -50,7 +50,7 @@ See [action.yml](action.yml) or [info.sh](src/check-version/info.sh).
     - INFO
     - WARN
     - ERROR
-- `check-only-for` - a list of coma separated files to check for (since GitHub Actions does not support array inputs
+- `check-only-for` - a list of coma separated labels to check for (since GitHub Actions does not support array inputs
   yet). Do not insert space after coma, or the list will be parsed as a separate arguments.
 
 ### Sample Configuration

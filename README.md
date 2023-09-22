@@ -14,6 +14,7 @@ Action functionality:
     - Add labels to the version-containing files
     - Add `readme-badge` check
     - Add `readme-changelog` check
+- **1.1.1** - Bump for no reason
 
 ## Limitations
 

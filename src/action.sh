@@ -63,11 +63,12 @@ if ! git::fetch "${ref}"; then
     log::fail "Git Fetch failed for [${ref}]"
 fi
 for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
-    log::debug "Checking changes for [${version_file}]"
     # shellcheck source=./version-in/*.sh
     source "${version_file}"
-    if array::not_contains "$(version::file_name)" "${check_only_for[@]}" && [ -n "${check_only_for}" ]; then
-        log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${version_file}] check"
+    check_label=$(version::label)
+    log::debug "Checking changes for [${check_label}]"
+    if array::not_contains "${check_label}" "${check_only_for[@]}" && [ -n "${check_only_for}" ]; then
+        log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${check_label}] check"
         continue
     fi
     diff_ref=$([ -z "${branch_ref}" ] && echo "${commit_ref}" || echo "origin/${branch_ref}")

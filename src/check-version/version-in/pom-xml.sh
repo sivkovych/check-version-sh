@@ -1,4 +1,7 @@
 #section Public API
+version::label() {
+  echo "pom.xml"
+}
 version::file_name() {
     echo "pom.xml"
 }
@@ -12,6 +15,6 @@ version::new() {
 #section Private API
 version::_get() {
     echo "${1}" |
-        local::grep -m 1 -Po "(?<=^${2}<version>)((\d+|.)+?)(?=<\/version>)"
+        local::grep -m 1 -Po "(?<=^${2}<version>)([0-9]{1,}|[.-/#])+?)(?=<\/version>)"
 }
 #endsection

@@ -65,10 +65,9 @@ fi
 for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
     # shellcheck source=./version-in/*.sh
     source "${version_file}"
-    readonly check_label
-                    check_label=$(version::label)
+    check_label=$(version::label)
     log::debug "Checking changes for [${check_label}]"
-    if array::not_contains "$(version::label)" "${check_only_for[@]}" && [ -n "${check_only_for}" ]; then
+    if array::not_contains "${check_label}" "${check_only_for[@]}" && [ -n "${check_only_for}" ]; then
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${check_label}] check"
         continue
     fi

@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.1.1-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.0.1-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 

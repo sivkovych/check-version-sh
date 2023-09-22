@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.1.0-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.1.1-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
@@ -14,6 +14,7 @@ Action functionality:
     - Add labels to the version-containing files
     - Add `readme-badge` check
     - Add `readme-changelog` check
+- **1.1.1** - Bump for no reason
 
 ## Limitations
 
@@ -61,7 +62,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.1
+      uses: sivkovych/check-version-sh@v1.1.1
       with:
         log-level: "INFO"
         check-only-for: "pom.xml,package.json,readme-badge"

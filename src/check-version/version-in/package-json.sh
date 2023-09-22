@@ -1,4 +1,7 @@
 #section Public API
+version::label() {
+  echo "package.json"
+}
 version::file_name() {
     echo "package.json"
 }

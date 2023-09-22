@@ -6,6 +6,8 @@ check_version::apply() {
     source "${version_file}"
     local file_name
                     file_name=$(version::file_name)
+    local check_label
+                    check_label=$(version::label)
     log::debug "Looking for [${file_name}] in git diff"
     local path
                path=$(git::diff_files "${ref}" | local::grep "^${file_name}$")
@@ -21,19 +23,19 @@ check_version::apply() {
     local new_version
                       new_version=$(version::new "$git_diff")
     if [ -n "${old_version}" ] && [ -z "${new_version}" ]; then
-        log::error "New version in [${file_name}] is empty or non-numeric"
+        log::error "New version for [${check_label}] is empty or non-numeric"
         return 1
     elif [ -z "${old_version}" ] && [ -z "${new_version}" ]; then
-        log::error "No changed version in [${file_name}]"
+        log::error "No changed version for [${check_label}]"
         return 1
     elif [ -z "${old_version}" ] && [ -n "${new_version}" ]; then
         log::info "File [${file_name}] was just added with the version [${new_version}]"
         return 0
     elif [ -z "${old_version}" ] || [ -z "${new_version}" ]; then
-        log::error "[${file_name}] was changed but version is the same"
+        log::error "[${check_label}] was changed but version is the same"
         return 1
     fi
-    log::info "Version changed from [${old_version}] to [${new_version}] in [${file_name}]"
+    log::info "Version changed from [${old_version}] to [${new_version}] for [${check_label}]"
     local sorted_parts
                         # shellcheck disable=SC2207
                         sorted_parts=($(util::sorted_parts "${PROJECT_DIR}"))

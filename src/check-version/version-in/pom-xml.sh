@@ -1,4 +1,7 @@
 #section Public API
+version::label() {
+  echo "pom.xml"
+}
 version::file_name() {
     echo "pom.xml"
 }

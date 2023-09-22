@@ -1,6 +1,6 @@
 #section Public API
 version::label() {
-    echo "README-badge"
+    echo "readme-badge"
 }
 version::file_name() {
     echo "README.md"

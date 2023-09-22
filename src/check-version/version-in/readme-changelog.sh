@@ -1,6 +1,6 @@
 #section Public API
 version::label() {
-  echo "README-changelog"
+  echo "readme-changelog"
 }
 version::file_name() {
     echo "README.md"

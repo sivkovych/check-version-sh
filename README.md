@@ -9,7 +9,7 @@ Action functionality:
 
 ## Changelog
 
-- **1.1.1**
+- **1.1.0**
     - Removed `README.md` standard option
     - Add labels to the version-containing files
     - Add `readme-badge` check

@@ -9,33 +9,11 @@ Action functionality:
 
 ## Changelog
 
-<details>
-<summary>Full Changelog</summary>
-
 - **1.1.0**
-  - Removed `README.md` standard option
-  - Add labels to the version-containing files
-  - Add `readme-badge` check
-  - Add `readme-changelog` check
-- **1.1.1**
-- **2.213.2**
-- **AsdasD**
-  - asdasdasd
-  - asdasdasd
-
-</details>
-
-- **1.1.1**
-- **2.213.2**
-- **2.2.3**
-  - asdasdasd
-  - asdasdasd
-- **2.2.4**
-  - asdasdasd
-  - asdasdasd
-- **2.2.5**
-  - asdasdasd
-  - asdasdasd
+    - Removed `README.md` standard option
+    - Add labels to the version-containing files
+    - Add `readme-badge` check
+    - Add `readme-changelog` check
 
 ## Limitations
 
@@ -43,8 +21,8 @@ Action functionality:
     - `pom.xml` - check for the `<version>\d.\d.\d</version>`
     - `package.json` - check for the `"version": "\d.\d.\d""` version
     - `README.md`
-      - `readme-badge` - check for the `https://*.+/badge/version-\d.\d.\d`
-      - `readme-changelog` - check for the `- **\d.\d.\d**`
+        - `readme-badge` - check for the `https://*.+/badge/version-\d.\d.\d`
+        - `readme-changelog` - check for the `- **\d.\d.\d**`
 - Currently supported numeric versions only
 - MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 
@@ -67,11 +45,11 @@ And with fail code `1` if check
 See [action.yml](action.yml) or [info.sh](src/check-version/info.sh).
 
 - `log-level` - logging level that will be used by the shell script
-  - TRACE
-  - DEBUG
-  - INFO
-  - WARN
-  - ERROR
+    - TRACE
+    - DEBUG
+    - INFO
+    - WARN
+    - ERROR
 - `check-only-for` - a list of coma separated files to check for (since GitHub Actions does not support array inputs
   yet). Do not insert space after coma, or the list will be parsed as a separate arguments.
 
@@ -86,6 +64,6 @@ jobs:
       uses: sivkovych/check-version-sh@v1.1
       with:
         log-level: "INFO"
-        check-only-for: "pom.xml,package.json"
+        check-only-for: "pom.xml,package.json,readme-badge"
     # ...
 ```

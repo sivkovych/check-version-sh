@@ -22,6 +22,8 @@ check_version::apply() {
                        old_version=$(version::old "$git_diff")
     local new_version
                       new_version=$(version::new "$git_diff")
+    log::trace "Old version -- [${old_version}]"
+    log::trace "New version -- [${new_version}]"
     if [ -n "${old_version}" ] && [ -z "${new_version}" ]; then
         log::error "New version for [${check_label}] is empty or non-numeric"
         return 1
@@ -29,7 +31,7 @@ check_version::apply() {
         log::error "No changed version for [${check_label}]"
         return 1
     elif [ -z "${old_version}" ] && [ -n "${new_version}" ]; then
-        log::info "File [${file_name}] was just added with the version [${new_version}]"
+        log::info "Version [${check_label}] was just added - [${new_version}]"
         return 0
     elif [ -z "${old_version}" ] || [ -z "${new_version}" ]; then
         log::error "[${check_label}] was changed but version is the same"

@@ -1,4 +1,7 @@
 #section Public API
+version::label() {
+  echo "README-changelog"
+}
 version::file_name() {
     echo "README.md"
 }
@@ -12,6 +15,6 @@ version::new() {
 #section Private API
 version::_get() {
     echo "${1}" |
-        local::grep -m 1 -Po "(?<=^${2}Version:)(.+?)(?=$)"
+        local::grep -m 1 -Po ""
 }
 #endsection

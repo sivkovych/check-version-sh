@@ -1,11 +1,35 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.1.0-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.1.2-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
 - Ensure version changes regardless base branch on pull request
 - Ensure version changes regardless previous commit on push
+
+## Changelog
+
+<details>
+<summary>Full Changelog</summary>
+
+- **1.1.0**
+  - Removed `README.md` standard option
+  - Add labels to the version-containing files
+  - Add `readme-badge` check
+  - Add `readme-changelog` check
+- **1.1.1**
+- **2.213.2**
+- **AsdasD**
+  - asdasdasd
+  - asdasdasd
+
+</details>
+
+- **1.1.1**
+- **2.213.2**
+- **2.2.3**
+  - asdasdasd
+  - asdasdasd
 
 ## Limitations
 
@@ -13,8 +37,8 @@ Action functionality:
     - `pom.xml` - check for the `<version>\d.\d.\d</version>`
     - `package.json` - check for the `"version": "\d.\d.\d""` version
     - `README.md`
-      - `README-badge` - check for the `https://*.+/badge/version-\d.\d.\d`
-      - `README-changelog` - check for the `- **\d.\d.\d**`
+      - `readme-badge` - check for the `https://*.+/badge/version-\d.\d.\d`
+      - `readme-changelog` - check for the `- **\d.\d.\d**`
 - Currently supported numeric versions only
 - MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 

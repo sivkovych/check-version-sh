@@ -16,7 +16,7 @@ Action functionality:
     - `README.md`
         - `readme-badge` - check for the `https://*.+/badge/version-\d.\d.\d` version
         - `readme-changelog` - check for the `- **\d.\d.\d**` version
-        - `readme-action` - check for the `<current-repo-name>@v\d.\d.\d` version
+        - `readme-action` - check for the `<current-repo-name>@v\d.\d.\d` version. Suppose to be useful for actions only
 - Currently supported numeric versions only
 - MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 

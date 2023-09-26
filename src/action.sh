@@ -28,8 +28,8 @@ while [ ${#} -gt 0 ]; do
         info::get_usage
         exit 0
     elif [[ "${1}" == "--check-only-for" ]]; then
-        # shellcheck disable=SC2206
-        check_only_for=(${2/,/ })
+        # shellcheck disable=SC2207
+        check_only_for=($(echo "${2}" | tr "," " "))
         shift
     elif [[ "${1}" == "--"* ]]; then
         variable="${1/--/}"

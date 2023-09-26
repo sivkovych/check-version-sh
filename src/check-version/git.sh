@@ -20,4 +20,8 @@ git::diff() {(
     set -e
     git diff "${1}" "${2}"
 )}
+git::get_repository_name() {(
+    set -e
+    basename "$(git rev-parse --show-toplevel)"
+)}
 #endsection

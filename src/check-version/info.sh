@@ -27,11 +27,10 @@ info::get_usage() {
 }
 info::get_description() {
     local supported_files=""
-    # shellcheck disable=SC2154
     for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
         # shellcheck source=./version-in/*.sh
         source "${version_file}"
-        supported_files="${supported_files}  - $(version::file_name)\n"
+        supported_files="${supported_files}  - $(version::label)\n"
     done
     echo ""
     echo "Parses configuration files and git log to detect and ensure version changes."

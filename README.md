@@ -36,6 +36,7 @@ Action functionality:
     - Fix regexp for the old version in the `readme-changelog` version
     - Fix `change-only-for` array-split
     - Change Git current branch retrieval to support Git version < 2.22 
+    - Fix label for the `readme-action` label
 
 ## Usage
 

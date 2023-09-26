@@ -16,7 +16,6 @@ version::new() {
 version::_get() {
     echo "${1}" |
         local::grep "${2}" |
-        local::grep -m 1 -Po "\b(([\w-]+://?|www[.])[^\s()<>]+badge[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))" |
-        local::grep -Po "(?<=/badge/version-)(([0-9]{1,}|[.-/#])+?)(?=-)"
+        local::grep -m 1 -Po "(?<=$(git::get_repository_name)@v)(([0-9]{1,}|[.-/#])+?)(?=$)"
 }
 #endsection

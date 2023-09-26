@@ -1,11 +1,24 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.1.1-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.2.0-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
 - Ensure version changes regardless base branch on pull request
 - Ensure version changes regardless previous commit on push
+
+## Limitations
+
+- Currently supported files
+    - `pom.xml` - check for the first `<version>\d.\d.\d</version>`
+    - `package.json` - check for the first `"version": "\d.\d.\d""` version
+    - `package-lock.json` - check for the first `"version": "\d.\d.\d""` version
+    - `README.md`
+        - `readme-badge` - check for the `https://*.+/badge/version-\d.\d.\d` version
+        - `readme-changelog` - check for the `- **\d.\d.\d**` version
+        - `readme-action` - check for the `<current-repo-name>@v\d.\d.\d` version
+- Currently supported numeric versions only
+- MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 
 ## Changelog
 
@@ -15,17 +28,10 @@ Action functionality:
     - Add `readme-badge` check
     - Add `readme-changelog` check
 - **1.1.1** - Bump for no reason
-
-## Limitations
-
-- Currently supported files
-    - `pom.xml` - check for the `<version>\d.\d.\d</version>`
-    - `package.json` - check for the `"version": "\d.\d.\d""` version
-    - `README.md`
-        - `readme-badge` - check for the `https://*.+/badge/version-\d.\d.\d`
-        - `readme-changelog` - check for the `- **\d.\d.\d**`
-- Currently supported numeric versions only
-- MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
+- **1.2.0**
+    - Add `package-lock.json` file support
+    - Add `readme-action` label support
+    - Fix digit regexp for the `readme-badge` label
 
 ## Usage
 
@@ -62,7 +68,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.1.1
+      uses: sivkovych/check-version-sh@v1.2.0
       with:
         log-level: "INFO"
         check-only-for: "pom.xml,package.json,readme-badge"

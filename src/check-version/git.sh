@@ -1,7 +1,7 @@
 #section Public API
 git::branch() {(
     set -e
-    git branch --show-current
+    git rev-parse --abbrev-ref HEAD
 )}
 git::fetch() {(
     set -e

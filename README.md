@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.2.0-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.2.1-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
@@ -32,6 +32,11 @@ Action functionality:
     - Add `package-lock.json` file support
     - Add `readme-action` label support
     - Fix digit regexp for the `readme-badge` label
+- **1.2.1**
+    - Fix regexp for the old version in the `readme-changelog` version
+    - Fix `change-only-for` array-split
+    - Change Git current branch retrieval to support Git version < 2.22 
+    - Fix label for the `readme-action` label
 
 ## Usage
 
@@ -68,7 +73,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.2.0
+      uses: sivkovych/check-version-sh@v1.2.1
       with:
         log-level: "INFO"
         check-only-for: "pom.xml,package.json,readme-badge"

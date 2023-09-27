@@ -20,7 +20,7 @@ for argument in ${*//--/$'\n'}; do
     "log_level") declare -xr log_level="${args[1]}" ;;
     "check_only_for")
         arr=("${args[@]:1}")
-        eval declare -ar check_only_for=\("${arr[*]}"\)
+        eval declare -axr check_only_for=\("${arr[*]}"\)
         ;;
     esac
     args=()

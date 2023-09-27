@@ -7,7 +7,7 @@ source "${PROJECT_DIR}"/array.sh
 source "${PROJECT_DIR}"/util.sh
 source "${PROJECT_DIR}"/git.sh
 source "${PROJECT_DIR}"/log.sh
-source "${PROJECT_DIR}"/arguments.sh
+source "${PROJECT_DIR}"/arguments.sh "${*}"
 source "${PROJECT_DIR}"/info.sh
 source "${PROJECT_DIR}"/check-version.sh
 #endsection

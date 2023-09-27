@@ -12,10 +12,6 @@ source "${PROJECT_DIR}"/info.sh
 source "${PROJECT_DIR}"/check-version.sh
 #endsection
 #section Set Up
-echo "BRANCH_REF ${branch_ref}"
-echo "COMMIT_REF ${commit_ref}"
-echo "LOG_LEVEL ${log_level}"
-echo "CHECK_ONLY_FOR ${check_only_for[*]}"
 log::configure_log "${log_level:-"info"}"
 log::debug "Configured log level to [${log_level}]"
 log::trace "Input arguments - [${*}]"

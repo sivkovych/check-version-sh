@@ -61,7 +61,7 @@ And with fail code `1` if check
 
 ### YAML Parameters
 
-See [info.sh](src/check-version/info.sh) or [action.yml](action.yml).
+See [action.yml](action.yml) or [info.sh](src/check-version/info.sh).
 
 - `log-level` - logging level that will be used by the shell script
     - TRACE
@@ -83,6 +83,6 @@ jobs:
       uses: sivkovych/check-version-sh@v1.3.0
       with:
         log-level: "INFO"
-        check-only-for: "pom.xml package.json readme-version-badge"
+        check-only-for: "pom.xml, package.json, readme-version-badge"
     # ...
 ```

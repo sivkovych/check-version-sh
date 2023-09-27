@@ -7,44 +7,14 @@ source "${PROJECT_DIR}"/array.sh
 source "${PROJECT_DIR}"/util.sh
 source "${PROJECT_DIR}"/git.sh
 source "${PROJECT_DIR}"/log.sh
+source "${PROJECT_DIR}"/arguments.sh
 source "${PROJECT_DIR}"/info.sh
 source "${PROJECT_DIR}"/check-version.sh
-#endsection
-#section Parameter Parsing
-readonly old_ifs="${IFS}"
-readonly input_arguments="${*}"
-IFS=$'\n'
-for argument in ${input_arguments//--/$'\n'}; do
-    IFS=$' '
-    for arg in ${argument}; do
-        args+=("$(string::get_separated "${arg}")")
-    done
-    if [ -z "${args[*]}" ]; then
-        continue
-    fi
-    key="${args[0]//-/_}"
-    case "${key}" in
-    "help")
-        info::get_description
-        info::get_usage
-        exit 0
-        ;;
-    "branch_ref") declare -r branch_ref="${args[1]}" ;;
-    "commit_ref") declare -r commit_ref="${args[1]}" ;;
-    "log_level") declare -r log_level="${args[1]}" ;;
-    "check_only_for")
-        arr=("${args[@]:1}")
-        eval declare -ar check_only_for=\("${arr[*]}"\)
-        ;;
-    esac
-    args=()
-done
-IFS="${old_ifs}"
 #endsection
 #section Set Up
 log::configure_log "${log_level:-"info"}"
 log::debug "Configured log level to [${log_level}]"
-log::trace "Input arguments - [${input_arguments}]"
+log::trace "Input arguments - [${*}]"
 log::debug "$(info::get_parameters \
     "branch_ref" "${branch_ref}"\
     "commit_ref" "${commit_ref}"\

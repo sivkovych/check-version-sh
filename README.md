@@ -44,6 +44,7 @@ Action functionality:
     - Add support of coma/space separated string array as an input argument
     - Modified info messages 
     - Move aliases initialization to a separate file
+    - Move arguments parsing to a separate file
 
 ## Usage
 

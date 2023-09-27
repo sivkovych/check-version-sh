@@ -6,12 +6,11 @@ branding:
   color: white
 inputs:
   log-level:
-    description: "Logging level that will be used by the script"
+    description: "Logging level that will be used by the action"
     required: false
     default: "INFO"
   check-only-for:
-    description: "A list of coma separated files to check for (since GitHub Actions does not support array inputs yet).
-      Do not insert space after coma, or the list will be parsed as a separate arguments."
+    description: "A list of coma separated files to check for (since GitHub Actions does not support array inputs yet)"
     required: false
 runs:
   using: "composite"

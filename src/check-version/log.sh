@@ -34,7 +34,7 @@ log::fail() {
 log::shallow_fail() {
     local message="${1}"
     if log::_is_not_level "debug"; then
-        message="${message}, re-run with [--log-level debug] to get more information"
+        message="${message}\nRe-run with [--log-level debug] to get more information"
     fi
     log::error "${message}"
     log::debug "Exit code [1]"

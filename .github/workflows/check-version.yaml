@@ -20,4 +20,4 @@ jobs:
         uses: ./
         with:
           log-level: "TRACE"
-          check-only-for: "readme-badge,readme-changelog,readme-action"
+          check-only-for: "readme-version-badge, readme-changelog, readme-action"

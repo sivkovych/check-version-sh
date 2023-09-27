@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.2.1-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.3.0-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
@@ -9,14 +9,15 @@ Action functionality:
 
 ## Limitations
 
-- Currently supported files
+- Currently supported options
     - `pom.xml` - check for the first `<version>\d.\d.\d</version>`
     - `package.json` - check for the first `"version": "\d.\d.\d""` version
     - `package-lock.json` - check for the first `"version": "\d.\d.\d""` version
     - `README.md`
-        - `readme-badge` - check for the `https://*.+/badge/version-\d.\d.\d` version
+        - `readme-version-badge` - check for the `https://*.+/badge/version-\d.\d.\d` version
+        - `readme-nexus-badge` - check for the `https://*.+/badge/nexus-\d.\d.\d` version
         - `readme-changelog` - check for the `- **\d.\d.\d**` version
-        - `readme-action` - check for the `<current-repo-name>@v\d.\d.\d` version. Suppose to be useful for actions only
+        - `readme-action` - check for the `<current-repo-name>@v\d.\d.\d` version
 - Currently supported numeric versions only
 - MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 
@@ -35,8 +36,14 @@ Action functionality:
 - **1.2.1**
     - Fix regexp for the old version in the `readme-changelog` version
     - Fix `change-only-for` array-split
-    - Change Git current branch retrieval to support Git version < 2.22 
+    - Change Git current branch retrieval to support Git version < 2.22
     - Fix label for the `readme-action` label
+- **1.3.0**
+    - Rename `readme-badge` option to `readme-version-badge`
+    - Add `readme-nexus-badge` option
+    - Add support of coma/space separated string array as an input argument
+    - Modified info messages 
+    - Move aliases initialization to a separate file
 
 ## Usage
 
@@ -52,9 +59,9 @@ And with fail code `1` if check
 - for at least one present (from all supported version files) file fails
 - if none of the files (from all supported version files) is present in the `git diff`
 
-### Parameters
+### YAML Parameters
 
-See [action.yml](action.yml) or [info.sh](src/check-version/info.sh).
+See [info.sh](src/check-version/info.sh) or [action.yml](action.yml).
 
 - `log-level` - logging level that will be used by the shell script
     - TRACE
@@ -62,8 +69,8 @@ See [action.yml](action.yml) or [info.sh](src/check-version/info.sh).
     - INFO
     - WARN
     - ERROR
-- `check-only-for` - a list of coma separated labels to check for (since GitHub Actions does not support array inputs
-  yet). Do not insert space after coma, or the list will be parsed as a separate arguments.
+- `check-only-for` - a list of coma or space separated labels to check for    
+  (since GitHub Actions does not support yaml array inputs yet)
 
 ### Sample Configuration
 
@@ -73,9 +80,9 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.2.1
+      uses: sivkovych/check-version-sh@v1.3.0
       with:
         log-level: "INFO"
-        check-only-for: "pom.xml,package.json,readme-badge"
+        check-only-for: "pom.xml package.json readme-version-badge"
     # ...
 ```

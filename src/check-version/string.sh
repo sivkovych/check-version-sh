@@ -12,4 +12,7 @@ string::element() {
                      delimiter="$(string::delimiter "${1}")"
     echo "${1}" | cut -d"${delimiter}" -f"${2}"
 }
+string::get_separated() {
+    echo "${1}" | sed "s|,| |g" | tr -s " "
+}
 #endsection

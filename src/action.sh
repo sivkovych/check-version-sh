@@ -1,17 +1,7 @@
 #!/bin/bash
-#section Aliases
-shopt -s expand_aliases
-if [[ "${OSTYPE}" =~ ^darwin ]]; then
-    if ! command -v ggrep >/dev/null; then
-        brew install --quiet grep >/dev/null
-    fi
-    alias local::grep='ggrep'
-elif [[ "${OSTYPE}" =~ ^linux ]]; then
-    alias local::grep='grep'
-fi
-#endsection
 #section Imports
 readonly PROJECT_DIR="$(dirname "${0}")/check-version"
+source "${PROJECT_DIR}"/alias.sh
 source "${PROJECT_DIR}"/string.sh
 source "${PROJECT_DIR}"/array.sh
 source "${PROJECT_DIR}"/util.sh
@@ -21,36 +11,45 @@ source "${PROJECT_DIR}"/info.sh
 source "${PROJECT_DIR}"/check-version.sh
 #endsection
 #section Parameter Parsing
-readonly parameters="${*}"
-while [ ${#} -gt 0 ]; do
-    if [[ "${1}" == "--help" ]]; then
+readonly old_ifs="${IFS}"
+readonly input_arguments="${*}"
+IFS=$'\n'
+for argument in ${input_arguments//--/$'\n'}; do
+    IFS=$' '
+    for arg in ${argument}; do
+        args+=("$(string::get_separated "${arg}")")
+    done
+    if [ -z "${args[*]}" ]; then
+        continue
+    fi
+    key="${args[0]//-/_}"
+    case "${key}" in
+    "help")
         info::get_description
         info::get_usage
         exit 0
-    elif [[ "${1}" == "--check-only-for" ]]; then
-        # shellcheck disable=SC2207
-        check_only_for=($(echo "${2}" | tr "," " "))
-        shift
-    elif [[ "${1}" == "--"* ]]; then
-        variable="${1/--/}"
-        if [[ "${2}" == "--"* ]]; then
-            declare "${variable//-/_}"=
-            shift
-        fi
-        variable="${1/--/}"
-        declare "${variable//-/_}"="${2}"
-        shift
-    fi
-    shift
+        ;;
+    "branch_ref") declare -r branch_ref="${args[1]}" ;;
+    "commit_ref") declare -r commit_ref="${args[1]}" ;;
+    "log_level") declare -r log_level="${args[1]}" ;;
+    "check_only_for")
+        arr=("${args[@]:1}")
+        eval declare -ar check_only_for=\("${arr[*]}"\)
+        ;;
+    esac
+    args=()
 done
+IFS="${old_ifs}"
 #endsection
 #section Set Up
-readonly check_only_for
-readonly branch_ref
-readonly commit_ref
 log::configure_log "${log_level:-"info"}"
 log::debug "Configured log level to [${log_level}]"
-log::debug "Received parameters: [${parameters}]"
+log::trace "Input arguments - [${input_arguments}]"
+log::debug "$(info::get_parameters \
+    "branch_ref" "${branch_ref}"\
+    "commit_ref" "${commit_ref}"\
+    "log_level" "${log_level}"\
+    "check_only_for" "${check_only_for[*]}")"
 if [ -z "${branch_ref}" ] && [ -z "${commit_ref}" ]; then
     log::shallow_fail "Missing required parameters [--branch-ref] or [--commit-ref]"
     info::get_usage
@@ -67,7 +66,7 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
     source "${version_file}"
     check_label=$(version::label)
     log::debug "Checking changes for [${check_label}]"
-    if array::not_contains "${check_label}" "${check_only_for[@]}" && [ -n "${check_only_for}" ]; then
+    if array::not_contains "${check_label}" "${check_only_for[@]}" && [ -n "${check_only_for[*]}" ]; then
         log::debug "[check-only-for ${check_only_for[*]}] option is set - skipping [${check_label}] check"
         continue
     fi

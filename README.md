@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.3.1-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.3.2-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
@@ -48,6 +48,9 @@ Action functionality:
 - **1.3.1** 
     - Add list of failed files to the log
     - Add successful message to the log
+- **1.3.2**
+    - Fix failed files logging
+    - Add missing files log message
 
 ## Usage
 
@@ -84,7 +87,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.3.1
+      uses: sivkovych/check-version-sh@v1.3.2
       with:
         log-level: "INFO"
         check-only-for: "pom.xml, package.json, readme-version-badge"

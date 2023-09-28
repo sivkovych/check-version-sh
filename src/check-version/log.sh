@@ -56,8 +56,8 @@ log::_to_number() {
     case "$(echo "${1}" | tr "[:lower:]" "[:upper:]")" in
         "TRACE") echo 0 ;;
         "DEBUG") echo 1 ;;
-        "INFO") echo 2 ;;
-        "WARN") echo 3 ;;
+        "INFO ") echo 2 ;;
+        "WARN ") echo 3 ;;
         "ERROR") echo 4 ;;
         *) echo 2 ;;
     esac
@@ -66,10 +66,10 @@ log::_to_string() {
     case "${1}" in
         0) echo "TRACE" ;;
         1) echo "DEBUG" ;;
-        2) echo "INFO" ;;
-        3) echo "WARN" ;;
+        2) echo "INFO " ;;
+        3) echo "WARN " ;;
         4) echo "ERROR" ;;
-        *) echo "INFO" ;;
+        *) echo "INFO " ;;
     esac
 }
 #endsection

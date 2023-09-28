@@ -44,17 +44,21 @@ for version_file in "${PROJECT_DIR}"/version-in/*.sh; do
     check_version::apply "${version_file}" "${diff_ref}"
     check_result="${?}"
     check_results+=("${check_result}")
-    log::debug "Received exit code from version check [${check_result}]"
+    failed_labels+=("${check_label}")
+    log::debug "Received exit code from version check [${check_result}] for [${check_label}]"
 done
 log::debug "Version Checks exit codes: [${check_results[*]}]"
 if array::contains 1 "${check_results[@]}"; then
+    log::error "Failed labels: [${failed_labels[*]}]"
     log::fail "Version Check failed"
 fi
 if array::every 66 "${check_results[@]}"; then
     log::fail "No changed/supported version files found"
 fi
 if ! array::every 0 "${check_results[@]}" && [ -n "${check_only_for}" ]; then
+    log::error "Failed labels: [${failed_labels[*]}]"
     log::fail "Not all specified file checks were successful"
 fi
+log::info "All checks were successful"
 log::debug "Exit code [0]"
 exit 0

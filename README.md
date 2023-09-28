@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.3.0-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.3.1-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
@@ -45,6 +45,9 @@ Action functionality:
     - Modified info messages 
     - Move aliases initialization to a separate file
     - Move arguments parsing to a separate file
+- **1.3.1** 
+    - Add list of failed files to the log
+    - Add successful message to the log
 
 ## Usage
 
@@ -81,7 +84,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.3.0
+      uses: sivkovych/check-version-sh@v1.3.1
       with:
         log-level: "INFO"
         check-only-for: "pom.xml, package.json, readme-version-badge"

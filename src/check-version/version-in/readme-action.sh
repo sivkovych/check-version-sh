@@ -16,6 +16,7 @@ version::new() {
 version::_get() {
     echo "${1}" |
         local::grep "${2}" |
-        local::grep -m 1 -Po "(?<=$(git::get_repository_name)@v)(([0-9]{1,}|[.-/#])+?)(?=$)"
+        local::grep -m 1 -Po "(?<=$(git::get_repository_name)@)[\w|]+(([0-9]{1,}|[.-/#])+?)(?=$)" |
+        sed "s|[^0-9.-/#]||g"
 }
 #endsection

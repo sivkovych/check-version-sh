@@ -1,6 +1,6 @@
 #section Public API
 version::label() {
-  echo "package-lock.json"
+    echo "package-lock.json"
 }
 version::file_name() {
     echo "package-lock.json"

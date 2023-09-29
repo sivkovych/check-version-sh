@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.3.2-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.3.3-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
@@ -14,10 +14,10 @@ Action functionality:
     - `package.json` - check for the first `"version": "\d.\d.\d""` version
     - `package-lock.json` - check for the first `"version": "\d.\d.\d""` version
     - `README.md`
-        - `readme-version-badge` - check for the `https://*.+/badge/version-\d.\d.\d` version
-        - `readme-nexus-badge` - check for the `https://*.+/badge/nexus-\d.\d.\d` version
-        - `readme-changelog` - check for the `- **\d.\d.\d**` version
-        - `readme-action` - check for the `<current-repo-name>@v\d.\d.\d` version
+        - `readme-version-badge` - check for the `https://*.+/badge/version-[\w|]\d.\d.\d` version
+        - `readme-nexus-badge` - check for the `https://*.+/badge/nexus-[\w|]\d.\d.\d` version
+        - `readme-changelog` - check for the `- **[\w|]\d.\d.\d**` version
+        - `readme-action` - check for the `<current-repo-name>@[\w|]\d.\d.\d` version
 - Currently supported numeric versions only
 - MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 
@@ -42,15 +42,16 @@ Action functionality:
     - Rename `readme-badge` option to `readme-version-badge`
     - Add `readme-nexus-badge` option
     - Add support of coma/space separated string array as an input argument
-    - Modified info messages 
+    - Modified info messages
     - Move aliases initialization to a separate file
     - Move arguments parsing to a separate file
-- **1.3.1** 
+- **1.3.1**
     - Add list of failed files to the log
     - Add successful message to the log
 - **1.3.2**
     - Fix failed files logging
     - Add missing files log message
+- **1.3.3** - Fix regexp to work with preceding letter
 
 ## Usage
 
@@ -87,7 +88,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.3.2
+      uses: sivkovych/check-version-sh@v1.3.3
       with:
         log-level: "INFO"
         check-only-for: "pom.xml, package.json, readme-version-badge"

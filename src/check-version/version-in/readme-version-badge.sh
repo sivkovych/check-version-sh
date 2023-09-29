@@ -17,6 +17,7 @@ version::_get() {
     echo "${1}" |
         local::grep "${2}" |
         local::grep -m 1 -Po "\b(([\w-]+://?|www[.])[^\s()<>]+badge[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))" |
-        local::grep -Po "(?<=/badge/version-)(([0-9]{1,}|[.-/#])+?)(?=-)"
+        local::grep -Po "(?<=/badge/version-)[\w|]+(([0-9]{1,}|[.-/#])+?)(?=-)" |
+        sed "s|[^0-9.-/#]||g"
 }
 #endsection

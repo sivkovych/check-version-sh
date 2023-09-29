@@ -16,9 +16,9 @@ log::configure_log "${log_level:-"info"}"
 log::debug "Configured log level to [${log_level}]"
 log::trace "Input arguments - [${*}]"
 log::debug "$(info::get_parameters \
-    "branch_ref" "${branch_ref}"\
-    "commit_ref" "${commit_ref}"\
-    "log_level" "${log_level}"\
+    "branch_ref" "${branch_ref}" \
+    "commit_ref" "${commit_ref}" \
+    "log_level" "${log_level}" \
     "check_only_for" "${check_only_for[*]}")"
 if [ -z "${branch_ref}" ] && [ -z "${commit_ref}" ]; then
     log::shallow_fail "Missing required parameters [--branch-ref] or [--commit-ref]"

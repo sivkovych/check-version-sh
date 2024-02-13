@@ -3,7 +3,7 @@ IFS=$'\n'
 for argument in ${*//--/$'\n'}; do
     IFS=$' '
     for arg in ${argument}; do
-        args+=("$(string::get_separated "${arg}")")
+        args+=("$(string::get_separated_by_coma "${arg}")")
     done
     if [ -z "${args[*]}" ]; then
         continue

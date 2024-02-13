@@ -3,6 +3,7 @@
 readonly PROJECT_DIR="$(dirname "${0}")/check-version"
 source "${PROJECT_DIR}"/alias.sh
 source "${PROJECT_DIR}"/string.sh
+source "${PROJECT_DIR}"/number.sh
 source "${PROJECT_DIR}"/array.sh
 source "${PROJECT_DIR}"/util.sh
 source "${PROJECT_DIR}"/git.sh

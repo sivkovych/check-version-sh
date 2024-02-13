@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.3.3-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.4.0-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
@@ -10,15 +10,15 @@ Action functionality:
 ## Limitations
 
 - Currently supported options
-    - `pom.xml` - check for the first `<version>\d.\d.\d</version>`
-    - `package.json` - check for the first `"version": "\d.\d.\d""` version
-    - `package-lock.json` - check for the first `"version": "\d.\d.\d""` version
+    - `pom.xml` - check for the first `<version>...</version>`
+    - `package.json` - check for the first `"version": "..."` version
+    - `package-lock.json` - check for the first `"version": "..."` version
     - `README.md`
-        - `readme-version-badge` - check for the `https://*.+/badge/version-[\w|]\d.\d.\d` version
-        - `readme-nexus-badge` - check for the `https://*.+/badge/nexus-[\w|]\d.\d.\d` version
-        - `readme-changelog` - check for the `- **[\w|]\d.\d.\d**` version
-        - `readme-action` - check for the `<current-repo-name>@[\w|]\d.\d.\d` version
-- Currently supported numeric versions only
+        - `readme-version-badge` - check for the `https://*.+/badge/version-...` version
+        - `readme-nexus-badge` - check for the `https://*.+/badge/nexus-...` version
+        - `readme-changelog` - check for the `- **...**` version
+        - `readme-action` - check for the `<current-repo-name>@...` version
+- Currently supported numeric or numeric with preceding letter versions only
 - MacOS implementation works through installing `ggrep` through `homebrew`, hence it works slower than on Ubuntu
 
 ## Changelog
@@ -28,7 +28,6 @@ Action functionality:
     - Add labels to the version-containing files
     - Add `readme-badge` check
     - Add `readme-changelog` check
-- **1.1.1** - Bump for no reason
 - **1.2.0**
     - Add `package-lock.json` file support
     - Add `readme-action` label support
@@ -51,7 +50,10 @@ Action functionality:
 - **1.3.2**
     - Fix failed files logging
     - Add missing files log message
-- **1.3.3** - Fix regexp to work with preceding letter
+- **1.3.3** - Fix regexp to work with the preceding letter
+- **1.4.0**
+    - Add support for more than 3 version parts
+    - Now parsing different delimiters in a single version
 
 ## Usage
 
@@ -88,7 +90,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.3.3
+      uses: sivkovych/check-version-sh@v1.4.0
       with:
         log-level: "INFO"
         check-only-for: "pom.xml, package.json, readme-version-badge"

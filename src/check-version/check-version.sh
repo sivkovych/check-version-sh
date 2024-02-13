@@ -38,23 +38,37 @@ check_version::apply() {
         return 1
     fi
     log::info "Version changed from [${old_version}] to [${new_version}] for [${check_label}]"
+    local old_version_arr
+                            # shellcheck disable=SC2207
+                            old_version_arr=($(string::get_separated "$(version::old "$git_diff")"))
+    local new_version_arr
+                            # shellcheck disable=SC2207
+                            new_version_arr=($(string::get_separated "$(version::new "$git_diff")"))
+    log::trace "Old version size: [${#old_version_arr[@]}]"
+    log::trace "New version size: [${#new_version_arr[@]}]"
+    log::trace "Iterating over new version: [${new_version_arr[*]}]"
     local sorted_parts
                         # shellcheck disable=SC2207
                         sorted_parts=($(util::sorted_parts "${PROJECT_DIR}"))
     local differences=()
-    for part in "${sorted_parts[@]}"; do
-        # shellcheck source=./part/*.sh
-        source "${part}"
+    for ((i=0; i < "${#new_version_arr[@]}"; i++)); do
+        local new_version_element
+                    new_version_element="$(number::format "${new_version_arr[$i]}")"
+        local part
+                    part="${sorted_parts[$i]}"
         local label
-                    label="$(part::label)"
-        local index=$(($(part::index) + 1))
-        local old_part
-                       old_part=$(string::element "${old_version}" "${index}")
-        log::debug "Identified old [${label}] -- [${old_part}]"
-        local new_part
-                       new_part=$(string::element "${new_version}" "${index}")
-        log::debug "Identified new [${label}] -- [${new_part}]"
-        local difference=$((new_part - old_part))
+        if [ -n "${part}" ]; then
+            # shellcheck source=./part/*.sh
+            source "${part}"
+            label="$(part::label)"
+        else
+            label="ADDITIONAL VERSION"
+        fi
+        log::trace "Element [${new_version_element}] is [${label}] part with index [${i}]"
+        local old_version_element
+                        old_version_element="$(number::format "${old_version_arr[$i]}")"
+        local difference=$((new_version_element - old_version_element))
+        log::trace "Difference between [${new_version_element}] and [${old_version_element}] is [${difference}]"
         differences+=("${label}")
         differences+=("${difference}")
     done

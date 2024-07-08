@@ -1,18 +1,12 @@
 #section Public API
-check_version::apply() {
-    local version_file="${1}"
-    local ref="${2}"
-    # shellcheck source=./version-in/*.sh
-    source "${version_file}"
-    local file_name
-                    file_name=$(version::file_name)
-    local check_label
-                    check_label=$(version::label)
-    log::debug "Looking for [${file_name}] in git diff"
+check_version::is_valid_file() {
+    local ref="${1}"
+    local file_name="${2}"
+    local file_label="${3:-${file_name}}"
     local path
                path=$(git::diff_files "${ref}" | local::grep "^${file_name}$")
     if [ -z "${path}" ]; then
-        log::debug "Cannot find [${file_name}] in changed files"
+        log::debug "Cannot find [${file_label}] in changed files"
         return 66
     fi
     log::debug "Found [${path}] in git diff"
@@ -25,19 +19,19 @@ check_version::apply() {
     log::trace "Old version -- [${old_version}]"
     log::trace "New version -- [${new_version}]"
     if [ -n "${old_version}" ] && [ -z "${new_version}" ]; then
-        log::error "New version for [${check_label}] is empty or non-numeric"
+        log::error "New version for [${file_label}] is empty or non-numeric"
         return 1
     elif [ -z "${old_version}" ] && [ -z "${new_version}" ]; then
-        log::error "No changed version for [${check_label}]"
+        log::error "No changed version for [${file_label}]"
         return 1
     elif [ -z "${old_version}" ] && [ -n "${new_version}" ]; then
-        log::info "Version [${check_label}] was just added - [${new_version}]"
+        log::info "Version [${file_label}] was just added - [${new_version}]"
         return 0
     elif [ -z "${old_version}" ] || [ -z "${new_version}" ]; then
-        log::error "[${check_label}] was changed but version is the same"
+        log::error "[${file_label}] was changed but version is the same"
         return 1
     fi
-    log::info "Version changed from [${old_version}] to [${new_version}] for [${check_label}]"
+    log::info "Version changed from [${old_version}] to [${new_version}] for [${file_label}]"
     local old_version_arr
                             # shellcheck disable=SC2207
                             old_version_arr=($(string::get_separated "$(version::old "$git_diff")"))
@@ -72,8 +66,20 @@ check_version::apply() {
         differences+=("${label}")
         differences+=("${difference}")
     done
-    log::debug "Calculated differences: [${differences[*]}]"
+    log::debug "Calculated differences in [${file_label}]: [${differences[*]}]"
     check_version::_comparison "${differences[@]}"
+    return "${?}"
+}
+check_version::apply() {
+    local version_file="${1}"
+    local ref="${2}"
+    # shellcheck source=./version-in/*.sh
+    source "${version_file}"
+    local file_name
+                    file_name=$(version::file_name)
+    local file_label
+                    file_label=$(version::label)
+    check_version::is_valid_file "${ref}" "${file_name}" "${file_label}"
     return "${?}"
 }
 #endsection

@@ -10,7 +10,7 @@ source "${PROJECT_DIR}"/git.sh
 source "${PROJECT_DIR}"/log.sh
 source "${PROJECT_DIR}"/arguments.sh "${*}"
 source "${PROJECT_DIR}"/info.sh
-source "${PROJECT_DIR}"/check-version.sh
+source "${PROJECT_DIR}"/check_version.sh
 #endsection
 #section Set Up
 log::configure_log "${log_level:-"info"}"

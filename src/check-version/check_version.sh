@@ -2,7 +2,19 @@
 check_version::is_valid_file() {
     local ref="${1}"
     local file_name="${2}"
-    local file_label="${3:-${file_name}}"
+    local label="${3}"
+    local version_path
+                      version_path="$(dirname "${BASH_SOURCE[0]}")/version-in/${label/./-}.sh"
+    log::info "${version_path}"
+    if [ -f "${version_path}" ]; then
+        # shellcheck source=./version-in/*.sh
+        source "${version_path}"
+    else
+        log::error "Label [${label}] is not supported"
+        return 1
+    fi
+    local file_label
+                    file_label=$(version::label)
     local path
                path=$(git::diff_files "${ref}" | local::grep "^${file_name}$")
     if [ -z "${path}" ]; then

@@ -1,6 +1,6 @@
 # check-version-sh
 
-[![Marketplace](https://img.shields.io/badge/version-1.5.0-blue)](https://github.com/marketplace/actions/check-version-sh)
+[![Marketplace](https://img.shields.io/badge/version-1.5.1-blue)](https://github.com/marketplace/actions/check-version-sh)
 
 Action functionality:
 
@@ -54,7 +54,7 @@ Action functionality:
 - **1.4.0**
     - Add support for more than 3 version parts
     - Now parsing different delimiters in a single version
-- **1.5.0** - Added `src/check.sh` as a runnable program 
+- **1.5.1** - Added `src/check.sh` as a runnable program 
 
 ## Usage
 
@@ -91,7 +91,7 @@ jobs:
   steps:
     # ...
     - name: Check Version Changes
-      uses: sivkovych/check-version-sh@v1.5.0
+      uses: sivkovych/check-version-sh@v1.5.1
       with:
         log-level: "INFO"
         check-only-for: "pom.xml, package.json, readme-version-badge"

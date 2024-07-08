@@ -17,6 +17,7 @@ log::configure_log "${log_level:-"debug"}"
 ref="${1}"
 file_path="${2}"
 file_label="${3}"
+echo "kek"
 check_version::is_valid_file "${ref}" "${file_path}" "${file_label}"
 readonly check_result="${?}"
 if [ "${check_result}" == "1" ] || [ "${check_result}" == "66" ]; then
